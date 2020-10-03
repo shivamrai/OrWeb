@@ -42,7 +42,7 @@ export default function Introduction() {
           multiline
           rows={8}
                       value={words.map((word) =>{
-            return  {word};
+            return  "\n" + word;
           } 
           )}
           onChange={handleChange}

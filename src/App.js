@@ -13,7 +13,7 @@ function App() {
       <MainAppBar />
       <header className="App-header">
        
-        <Introduction />
+        <TextEditor />
       </header>
     </div>
   );

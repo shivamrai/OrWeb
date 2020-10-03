@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1),
   },
+  typorgraphy: {
+    backgroundColor: theme.palette.info,
+  },
 }));
 
 export default function MouseOverPopover({propTest}) {
@@ -33,9 +36,8 @@ export default function MouseOverPopover({propTest}) {
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
+        className={classes.typorgraphy}
       >
-        {/* Hover with a Popover.
-        {propText} */}
         {propTest}
       </Typography>
       <Popover
