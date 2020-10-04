@@ -6,14 +6,14 @@ import TextEditor from './components/textEditor';
 import Risks from './components/Risks';
 import Introduction from './components/Introduction';
 import MainAppBar  from './components/MainAppBar';
-
+import BasicSetup from './components/BasicSetup';
 function App() {
   return (
     <div className="App">
       <MainAppBar />
       <header className="App-header">
        
-        <TextEditor />
+        <BasicSetup />
       </header>
     </div>
   );
