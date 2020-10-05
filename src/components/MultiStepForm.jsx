@@ -26,7 +26,7 @@ export const MultiStepForm = () => {
             <Link to="/basicSetup">Basic Setup</Link>
           </li>
           <li className={location.pathname === "/classAndDataExceptions" ? "active" : ""}>
-            <Link to="/classesAndDataExceptions">Classes Exception</Link>
+            <Link to="/classAndDataExceptions">Classes Exception</Link>
           </li>
           <li className={location.pathname === "/annotationsAndPackages" ? "active" : ""}>
             <Link to="/basicSetup">Packages Exception</Link>
