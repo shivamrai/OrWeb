@@ -15,6 +15,7 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
+import ChipInput from 'material-ui-chip-input'; 
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,12 +50,21 @@ const defaultValues = {
   OptimizationGradle:"no",
   optimizationFullModeR8:"no",
 };
+const chips = ['test1','test2'];
 export default function ClassAndDataExceptions() {
   const classes = useStyles();
   const {register, handleSubmit, control} = useForm({defaultValues});
   const [value, setValue] = React.useState('');
   const [aggObfvalue, setAggObfvalue] = React.useState('');
-
+  //const [yourChips,setYourChips] = React.useState([]);
+  // const handleAddChip = (e) =>{
+  //   let chip = e.target.value;
+  //   //e.preventDefault();
+  //   setYourChips([...yourChips, chip]);
+  // };
+  // const handleDeleteChip = (e) =>{let name = e.target.value;
+  //   setYourChips(yourChips.filter((e)=>(e !== name)))
+  // };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -68,21 +78,14 @@ export default function ClassAndDataExceptions() {
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit} class={classes.form}>
                   <section>
-                    <label>Do you want to enable Obfuscation?</label>
+                    <label>Do you have any data classes(classes requiring serialization from JSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</label>
                     <Controller
                       as={
-                        <RadioGroup aria-label="minifyEnabled">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
+                        <ChipInput
+                          value={chips}
+                          //onAdd={(chip) => handleAddChip(chip)}
+                          
+                        />
                       }
                       name="MinifyEnabled"
                       control={control}
