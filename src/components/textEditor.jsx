@@ -28,34 +28,17 @@ export default function TextEditor() {
   const classes = useStyles();
   const [words,setWords] = React.useState([ "-ignorewarnings","-dontobfuscate","-forceprocessing","-dontpreverify", "-allowaccessmodification","-useuniqueclassmembernames","-overloadaggressively","-keepparameternames"]);
   const [value, setValue] = React.useState('Controlled');
-  //const async wordsList = await(JSON.stringify(words));
-  // const listItems = 
   const listItems = words.map((rule) =>
   <HighlightTooltip propTest = {rule}></HighlightTooltip>
 );;
-  // useEffect(() => {
-  //   setValue({words.map((word) => {
-  //     return word})})
-  // }, [value])
+
   const handleChange = (event) => {
     setValue(event.target.value);
   };
   return (
     <div className={classes.root}>
       <Paper elevation={3}>
-          {/* <br /><br /> */}
-          {/* setValue({words.map((word) => {
-            return word})}); */}
-      {/* <TextField
-          id="outlined-multiline-static"
-          label="Multiline"
-          multiline
-          rows={8}
-          value={words.map((word) => {
-            return word})}
-          onChange={handleChange}
-          variant="outlined"
-        /> */}
+
         <Grid container spacing={1}>
           <Grid item xs={24} sm={12}>
             <Typography>

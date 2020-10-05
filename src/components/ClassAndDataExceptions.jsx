@@ -49,7 +49,7 @@ const defaultValues = {
   OptimizationGradle:"no",
   optimizationFullModeR8:"no",
 };
-export default function BasicSetup() {
+export default function ClassAndDataExceptions() {
   const classes = useStyles();
   const {register, handleSubmit, control} = useForm({defaultValues});
   const [value, setValue] = React.useState('');
@@ -88,97 +88,12 @@ export default function BasicSetup() {
                       control={control}
                     />
                   </section>
-                  <section>
-                    <label>Do you want to enable aggresive Obfuscation?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="overloadaggressively">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="OverloadAggressively"
-                      control={control}
-                    />
-                  </section>
-                  <section>
-                    <label>Do you want to Shrink your output APKs?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="shrinkResources">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="ShrinkResources"
-                      control={control}
-                      //text="Enable Shrinking"
-                    />
-                  </section>
-                  <section>
-                    <label>Do you want to enable Optimization?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="optimizationGradle">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="OptimizationGradle"
-                      control={control}
-                    />
-                  </section>
-                  <section>
-                    <label>Do you want to enable aggresive Optimization?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="optimizationFullModeR8">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="OptimizationFullModeR8"
-                      control={control}
-                    />
-                  </section>
                 </form>
               </Grid>
               <Grid item xs={24} sm={12}>
                   <Button
                     type="submit"
-                    
+
                     variant="contained"
                     color="secondary"
                   >Next</Button>
