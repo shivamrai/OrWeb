@@ -28,7 +28,6 @@ function App() {
         <StateMachineProvider>
         <DevTool />
           <div className="container">
-            <h1>Obfuscation Setup</h1>
             <Router>
               <MultiStepForm />
             </Router>

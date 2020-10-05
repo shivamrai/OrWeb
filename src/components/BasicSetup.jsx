@@ -15,6 +15,7 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -176,12 +177,13 @@ export default function BasicSetup() {
                 </form>
               </Grid>
               <Grid item xs={24} sm={12}>
-                  <Button
-                    type="submit"
-                    
-                    variant="contained"
-                    color="secondary"
-                  >Next</Button>
+              <Link to="/classAndDataExceptions">  <Button
+                  type="submit"
+
+                  variant="contained"
+                  color="secondary"
+                >Next</Button></Link>
+
               </Grid>
           </Grid>
         </Paper>
