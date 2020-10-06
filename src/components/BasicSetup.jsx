@@ -175,13 +175,22 @@ export default function BasicSetup() {
                 </form>
               </Grid>
               <Grid item xs={24} sm={12}>
-              <Link to="/classAndDataExceptions">  <Button
-                  type="submit"
-
-                  variant="contained"
-                  color="secondary"
-                >Next</Button></Link>
-
+                <Link to="/">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                  >Back
+                  </Button>
+                </Link>
+                <Link to="/classAndDataExceptions">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                  >Next
+                  </Button>
+                </Link>
               </Grid>
           </Grid>
         </Paper>

@@ -15,7 +15,9 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
-import ChipInput from 'material-ui-chip-input'; 
+import ChipInput from 'material-ui-chip-input';
+import Chip from "@material-ui/core/Chip";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,31 +42,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing.unit * 2,
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-
+  },
+  section: {
+    fontSize: 18, //for longer questions
   },
 }));
 const defaultValues = {
-  MinifyEnabled: "yes",
-  OverloadAggressively: "no",
-  ShrinkResources:"no",
-  OptimizationGradle:"no",
-  optimizationFullModeR8:"no",
+  GSONKeepRulesEnable: "yes",
+  LibraryChipInput: [],
+  DescriptorChipInput:[],
 };
-const chips = ['test1','test2'];
+
 export default function ClassAndDataExceptions() {
   const classes = useStyles();
   const {register, handleSubmit, control} = useForm({defaultValues});
   const [value, setValue] = React.useState('');
   const [aggObfvalue, setAggObfvalue] = React.useState('');
-  //const [yourChips,setYourChips] = React.useState([]);
-  // const handleAddChip = (e) =>{
-  //   let chip = e.target.value;
-  //   //e.preventDefault();
-  //   setYourChips([...yourChips, chip]);
-  // };
-  // const handleDeleteChip = (e) =>{let name = e.target.value;
-  //   setYourChips(yourChips.filter((e)=>(e !== name)))
-  // };
+  const [defaultValue,setDefaultValue] = React.useState([]);
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -77,29 +71,79 @@ export default function ClassAndDataExceptions() {
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit} class={classes.form}>
-                  <section>
-                    <label>Do you have any data classes(classes requiring serialization from JSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</label>
+                  <section className={classes.section}>
+                    <label>Do you have any data classes(classes requiring serialization from GSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</label>
                     <Controller
                       as={
-                        <ChipInput
-                          value={chips}
-                          //onAdd={(chip) => handleAddChip(chip)}
-                          
-                        />
+                        <RadioGroup aria-label="gSONKeepRulesEnable">
+                          <FormControlLabel
+                            value="yes"
+                            control={<Radio />}
+                            label="Yes"
+                          />
+                          <FormControlLabel
+                            value="no"
+                            control={<Radio />}
+                            label="No"
+                          />
+                        </RadioGroup>
                       }
-                      name="MinifyEnabled"
+                      name="GSONKeepRulesEnable"
                       control={control}
                     />
+                    <Typography>Known issues with GSON <a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
+                  </section>
+                  <section className={classes.section}>
+                    <label>Are you using external library jars or aars (like OkHttp3,SQLCipher)?</label>
+                    <Typography>Add those packages in below Text Field (case sensitive)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
+                    <Controller as={
+                      <ChipInput
+                        aria-label="libraryChipInput"
+                        value={defaultValue}
+                        control={<Chip />}
+                        label="Add Library Packages here"
+                      />
+                    }
+                    name="LibraryChipInput"
+                    control={control}
+                    />
+                    <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
+                  </section>
+                  <section className={classes.section}>
+                    <label>Do you want to keep some descriptor classes from obfuscation?</label>
+                    <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
+                    <Controller as={
+                      <ChipInput
+                        aria-label="descriptorChipInput"
+                        value={defaultValue}
+                        control={<Chip />}
+                        label="Add Library Packages here"
+                      />
+                    }
+                    name="DescriptorChipInput"
+                    control={control}
+                    />
+                    <Typography>This is to make sure some specified field types, method return types and method parameter types are not renamed</Typography>
                   </section>
                 </form>
               </Grid>
               <Grid item xs={24} sm={12}>
+                <Link to="/basicSetup">
                   <Button
                     type="submit"
-
                     variant="contained"
                     color="secondary"
-                  >Next</Button>
+                  >Back
+                  </Button>
+                </Link>
+                <Link to="/annotationsAndPackages">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                  >Next
+                  </Button>
+                </Link>
               </Grid>
           </Grid>
         </Paper>

@@ -10,14 +10,13 @@ import Introduction from "./Introduction";
 import BasicSetup from "./BasicSetup";
 import ClassAndDataExceptions from "./ClassAndDataExceptions";
 import AnnotationsAndPackages from "./AnnotationsAndPackages";
-import Diagnostics from "./Diagnostics"; 
+import Diagnostics from "./Diagnostics";
 import Result from "./Result";
 
 export const MultiStepForm = () => {
   const location = useLocation();
   return (
     <>
-
       <Route exact path="/" component={Introduction} />
       <Route path="/basicSetup" component={BasicSetup} />
       <Route path="/classAndDataExceptions" component={ClassAndDataExceptions} />
