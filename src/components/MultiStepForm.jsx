@@ -10,7 +10,7 @@ import Introduction from "./Introduction";
 import BasicSetup from "./BasicSetup";
 import ClassAndDataExceptions from "./ClassAndDataExceptions";
 import AnnotationsAndPackages from "./AnnotationsAndPackages";
-import Diagnostics from "./Diagnostics";
+import Diagnostics from "./Diagnostics"; 
 import Result from "./Result";
 
 export const MultiStepForm = () => {

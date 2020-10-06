@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    //display: 'flex',
     flexWrap: 'wrap',
     '& > *': {
       margin: theme.spacing(1),
