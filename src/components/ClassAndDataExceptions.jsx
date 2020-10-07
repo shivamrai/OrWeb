@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const defaultValues = {
   GSONKeepRulesEnable: "yes",
   LibraryChipInput: [],
+  DataClassChipInput: [],
   DescriptorChipInput:[],
 };
 
@@ -65,9 +66,8 @@ export default function ClassAndDataExceptions() {
       <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-          <br />
               <Grid item xs={24} sm={12}>
-                  <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
+                  <Typography variant="h5">Part 2 Data classes and JARs/AARs</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit} class={classes.form}>
@@ -93,6 +93,24 @@ export default function ClassAndDataExceptions() {
                     />
                     <Typography>Known issues with GSON <a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                   </section>
+                  <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
+                    <section className={classes.section}>
+                      <label>Are you using other data classes?</label>
+                      <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
+                      <Controller as={
+                        <ChipInput
+                          aria-label="dataClassChipInput"
+                          value={defaultValue}
+                          control={<Chip />}
+                          label="Add Optional Data classes"
+                        />
+                      }
+                      name="DataClassChipInput"
+                      control={control}
+                      />
+                      <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
+                    </section>
+                  </Grid>
                   <section className={classes.section}>
                     <label>Are you using external library jars or aars (like OkHttp3,SQLCipher)?</label>
                     <Typography>Add those packages in below Text Field (case sensitive)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
@@ -109,24 +127,9 @@ export default function ClassAndDataExceptions() {
                     />
                     <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
                   </section>
-                  <section className={classes.section}>
-                    <label>Do you want to keep some descriptor classes from obfuscation?</label>
-                    <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
-                    <Controller as={
-                      <ChipInput
-                        aria-label="descriptorChipInput"
-                        value={defaultValue}
-                        control={<Chip />}
-                        label="Add Library Packages here"
-                      />
-                    }
-                    name="DescriptorChipInput"
-                    control={control}
-                    />
-                    <Typography>This is to make sure some specified field types, method return types and method parameter types are not renamed</Typography>
-                  </section>
-                </form>
-              </Grid>
+
+              </form>
+            </Grid>
               <Grid item xs={24} sm={12}>
                 <Link to="/basicSetup">
                   <Button

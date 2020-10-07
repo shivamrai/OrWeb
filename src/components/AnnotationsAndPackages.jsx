@@ -15,6 +15,9 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
+import ChipInput from 'material-ui-chip-input';
+import Chip from "@material-ui/core/Chip";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,15 +44,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const defaultValues = {
-  MinifyEnabled: "yes",
-  OverloadAggressively: "no",
-  ShrinkResources:"no",
-  OptimizationGradle:"no",
-  optimizationFullModeR8:"no",
+  PackagesChipInput: [],
+  DescriptorChipInput:[],
 };
 export default function AnnotationsAndPackages() {
   const classes = useStyles();
   const {register, handleSubmit, control} = useForm({defaultValues});
+  const [defaultValue,setDefaultValue] = React.useState([]);
 
   return (
     <Container component="main" maxWidth="md" fixed={true}>
@@ -57,41 +58,62 @@ export default function AnnotationsAndPackages() {
       <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-          <br />
               <Grid item xs={24} sm={12}>
-                  <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
+                  <Typography variant="h5">Part 3 Annotations and Descriptor Class setup</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit} class={classes.form}>
-                  <section>
-                    <label>Do you want to enable Obfuscation?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="minifyEnabled">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="MinifyEnabled"
-                      control={control}
+                  <section className={classes.section}>
+                    <label>Do you want to keep some descriptor classes from obfuscation?</label>
+                    <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
+                    <Controller as={
+                      <ChipInput
+                        aria-label="descriptorChipInput"
+                        value={defaultValue}
+                        control={<Chip />}
+                        label="Add Library Packages here"
+                      />
+                    }
+                    name="DescriptorChipInput"
+                    control={control}
                     />
+                    <Typography>This is to make sure some specified field types, method return types and method parameter types are not renamed</Typography>
+                  </section>
+                  <section className={classes.section}>
+                    <label>Do you want to whitelist some packages?</label>
+                      <Typography>Add those packages below in format <i>"com.devnn"</i> in below Text Field (case sensitive)</Typography>
+                      <Controller as={
+                        <ChipInput
+                          aria-label="packagesChipInput"
+                          value={defaultValues}
+                          control={<Chip />}
+                          label="Add Library Packages here"
+                        />
+                        }
+                        name="PackagesChipInput"
+                        control={control}
+                      />
+                    <Typography>Some packages might break during obfuscation, those can be added to R8 whitelist.</Typography>
                   </section>
                 </form>
               </Grid>
               <Grid item xs={24} sm={12}>
+                <Link to="/classAndDataExceptions">
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
-                  >Next</Button>
+                  >Back
+                  </Button>
+                </Link>
+                <Link to="/diagnostics">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                  >Next
+                  </Button>
+                </Link>
               </Grid>
           </Grid>
         </Paper>
