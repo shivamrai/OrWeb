@@ -13,11 +13,21 @@ import BasicSetup from './components/BasicSetup';
 import MultiStepForm from './components/MultiStepForm';
 createStore({
   setupDetails: {
-    MinifyEnabled: "yes",
-    OverloadAggressively: "no",
-    ShrinkResources:"no",
-    OptimizationGradle:"no",
-    optimizationFullModeR8:"no",
+    MinifyEnabled: "",
+    OverloadAggressively: "",
+    ShrinkResources:"",
+    OptimizationGradle:"",
+    optimizationFullModeR8:"",
+    GSONKeepRulesEnable: "",
+    LibraryChipInput: [],
+    DataClassChipInput: [],
+    DescriptorChipInput:[],
+    PackagesChipInput: [],
+    DescriptorChipInput:[],
+    VerboseStats: "",
+    R8OutputCFG: "",
+    ShrinkedClassesStats:"",
+    RemoveCommonWarnings:"",
   }
 });
 function App() {

@@ -15,7 +15,9 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
-import {Link} from "react-router-dom";
+import {Link,useHistory} from "react-router-dom";
+import {useStateMachine} from "little-state-machine";
+import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,14 +48,23 @@ const defaultValues = {
   OverloadAggressively: "no",
   ShrinkResources:"no",
   OptimizationGradle:"no",
-  optimizationFullModeR8:"no",
+  OptimizationFullModeR8:"no",
 };
-export default function BasicSetup() {
+const BasicSetup = (props) => {
   const classes = useStyles();
-  const {register, handleSubmit, control} = useForm({defaultValues});
   const [value, setValue] = React.useState('');
   const [aggObfvalue, setAggObfvalue] = React.useState('');
-
+  const {state,action} = useStateMachine(updateAction);
+  const {handleSubmit, errors, register, control} = useForm({
+    defaultValues
+  });
+  const history = useHistory();
+  const onSubmit = data => {
+    console.log(data)
+    //console.log(e.target.value)
+    action(data);
+    history.push("/classAndDataExceptions");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -65,7 +76,7 @@ export default function BasicSetup() {
                   <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
-                <form onSubmit={handleSubmit} class={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section>
                     <label>Do you want to enable Obfuscation?</label>
                     <Controller
@@ -85,6 +96,7 @@ export default function BasicSetup() {
                       }
                       name="MinifyEnabled"
                       control={control}
+                      ref={register}
                     />
                   </section>
                   <section>
@@ -106,6 +118,8 @@ export default function BasicSetup() {
                       }
                       name="OverloadAggressively"
                       control={control}
+                      ref={register}
+
                     />
                   </section>
                   <section>
@@ -128,6 +142,8 @@ export default function BasicSetup() {
                       name="ShrinkResources"
                       control={control}
                       //text="Enable Shrinking"
+                      ref={register}
+
                     />
                   </section>
                   <section>
@@ -149,6 +165,8 @@ export default function BasicSetup() {
                       }
                       name="OptimizationGradle"
                       control={control}
+                      ref={register}
+
                     />
                   </section>
                   <section>
@@ -170,6 +188,8 @@ export default function BasicSetup() {
                       }
                       name="OptimizationFullModeR8"
                       control={control}
+                      ref={register}
+
                     />
                   </section>
                 </form>
@@ -183,14 +203,13 @@ export default function BasicSetup() {
                   >Back
                   </Button>
                 </Link>
-                <Link to="/classAndDataExceptions">
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
+                    onClick={handleSubmit(onSubmit)}
                   >Next
                   </Button>
-                </Link>
               </Grid>
           </Grid>
         </Paper>
@@ -198,3 +217,5 @@ export default function BasicSetup() {
     </Container>
   );
 }
+
+export default BasicSetup;
