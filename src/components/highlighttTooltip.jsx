@@ -22,11 +22,9 @@ export default function MouseOverPopover({propTest}) {
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
 
   return (

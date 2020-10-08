@@ -116,7 +116,6 @@ const BasicSetup = (props) => {
                       name="OverloadAggressively"
                       control={control}
                       ref={register}
-
                     />
                   </section>
                   <section>
@@ -138,9 +137,7 @@ const BasicSetup = (props) => {
                       }
                       name="ShrinkResources"
                       control={control}
-                      //text="Enable Shrinking"
                       ref={register}
-
                     />
                   </section>
                   <section>
@@ -163,7 +160,6 @@ const BasicSetup = (props) => {
                       name="OptimizationGradle"
                       control={control}
                       ref={register}
-
                     />
                   </section>
                   <section>
@@ -186,7 +182,6 @@ const BasicSetup = (props) => {
                       name="OptimizationFullModeR8"
                       control={control}
                       ref={register}
-
                     />
                   </section>
                 </form>

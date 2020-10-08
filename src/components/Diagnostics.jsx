@@ -36,10 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
 }));
 const defaultValues = {
@@ -58,7 +57,6 @@ const Diagnostics = (props) => {
   const onSubmit = data => {
     action(data);
     console.log(state);
-    //history.push("/result");
   };
   return (
     <Container component="main" maxWidth="md" fixed={true}>

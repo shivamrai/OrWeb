@@ -13,7 +13,7 @@ import AnnotationsAndPackages from "./AnnotationsAndPackages";
 import Diagnostics from "./Diagnostics";
 import Result from "./Result";
 
-export const MultiStepForm = () => {
+const MultiStepForm = () => {
   const location = useLocation();
   return (
     <>

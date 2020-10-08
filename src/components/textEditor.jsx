@@ -38,7 +38,6 @@ export default function TextEditor() {
   return (
     <div className={classes.root}>
       <Paper elevation={3}>
-
         <Grid container spacing={1}>
           <Grid item xs={24} sm={12}>
             <Typography>
