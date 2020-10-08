@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: 'wrap',
     '& > *': {
-     margin: theme.spacing(2),
+       margin: theme.spacing(2),
        height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
@@ -37,10 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
 }));
 const defaultValues = {
@@ -60,8 +59,6 @@ const BasicSetup = (props) => {
   });
   const history = useHistory();
   const onSubmit = data => {
-    console.log(data)
-    //console.log(e.target.value)
     action(data);
     history.push("/classAndDataExceptions");
   };

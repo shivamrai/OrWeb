@@ -15,15 +15,15 @@ import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
-import {Link} from "react-router-dom";
-
+import {Link,useHistory} from "react-router-dom";
+import {useStateMachine} from "little-state-machine";
+import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: 'wrap',
     '& > *': {
-     margin: theme.spacing(2),
-    //   width: theme.spacing(100),
+       margin: theme.spacing(2),
        height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
@@ -48,10 +48,18 @@ const defaultValues = {
   ShrinkedClassesStats:"no",
   RemoveCommonWarnings:"no",
 };
-export default function Diagnostics() {
+const Diagnostics = (props) => {
   const classes = useStyles();
-  const {register, handleSubmit, control} = useForm({defaultValues});
-
+  const {state,action} = useStateMachine(updateAction);
+  const {handleSubmit, errors, register, control} = useForm({
+    defaultValues
+  });
+  const history = useHistory();
+  const onSubmit = data => {
+    action(data);
+    console.log(state);
+    //history.push("/result");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -83,6 +91,7 @@ export default function Diagnostics() {
                       }
                       name="VerboseStats"
                       control={control}
+                      ref = {register}
                     />
                   </section>
                   <section>
@@ -104,6 +113,7 @@ export default function Diagnostics() {
                       }
                       name="R8OutputCFG"
                       control={control}
+                      ref = {register}
                     />
                   </section>
                   <section>
@@ -125,6 +135,7 @@ export default function Diagnostics() {
                       }
                       name="ShrinkedClassesStats"
                       control={control}
+                      ref = {register}
                     />
                   </section>
                   <section>
@@ -146,6 +157,7 @@ export default function Diagnostics() {
                       }
                       name="RemoveCommonWarnings"
                       control={control}
+                      ref = {register}
                     />
                   </section>
                 </form>
@@ -159,14 +171,13 @@ export default function Diagnostics() {
                   >Back
                   </Button>
                 </Link>
-                <Link to="/result">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                  >Generate config!
-                  </Button>
-                </Link>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleSubmit(onSubmit)}
+                >Next
+                </Button>
             </Grid>
           </Grid>
         </Paper>
@@ -174,3 +185,4 @@ export default function Diagnostics() {
     </Container>
   );
 }
+export default Diagnostics;

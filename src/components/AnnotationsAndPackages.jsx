@@ -126,7 +126,6 @@ export default function AnnotationsAndPackages() {
               </Grid>
           </Grid>
         </Paper>
-
       </div>
     </Container>
   );
