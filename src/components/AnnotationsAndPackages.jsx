@@ -17,14 +17,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
 import ChipInput from 'material-ui-chip-input';
 import Chip from "@material-ui/core/Chip";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {useStateMachine} from "little-state-machine";
+import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: 'wrap',
     '& > *': {
-     margin: theme.spacing(2),
-    //   width: theme.spacing(100),
+       margin: theme.spacing(2),
        height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing.unit * 2,
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
@@ -49,8 +50,16 @@ const defaultValues = {
 };
 export default function AnnotationsAndPackages() {
   const classes = useStyles();
-  const {register, handleSubmit, control} = useForm({defaultValues});
+  const {handleSubmit, errors, register, control} = useForm({
+    defaultValues
+  });
   const [defaultValue,setDefaultValue] = React.useState([]);
+  const {state,action} = useStateMachine(updateAction);
+  const history = useHistory();
+  const onSubmit = data => {
+    action(data);
+    history.push("/diagnostics");
+  };
 
   return (
     <Container component="main" maxWidth="md" fixed={true}>
@@ -62,20 +71,20 @@ export default function AnnotationsAndPackages() {
                   <Typography variant="h5">Part 3 Annotations and Descriptor Class setup</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
-                <form onSubmit={handleSubmit} class={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
                     <label>Do you want to keep some descriptor classes from obfuscation?</label>
                     <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
                     <Controller as={
                       <ChipInput
                         aria-label="descriptorChipInput"
-                        value={defaultValue}
                         control={<Chip />}
                         label="Add Library Packages here"
                       />
                     }
                     name="DescriptorChipInput"
                     control={control}
+                    ref={register}
                     />
                     <Typography>This is to make sure some specified field types, method return types and method parameter types are not renamed</Typography>
                   </section>
@@ -92,6 +101,7 @@ export default function AnnotationsAndPackages() {
                         }
                         name="PackagesChipInput"
                         control={control}
+                        ref={register}
                       />
                     <Typography>Some packages might break during obfuscation, those can be added to R8 whitelist.</Typography>
                   </section>
@@ -106,14 +116,13 @@ export default function AnnotationsAndPackages() {
                   >Back
                   </Button>
                 </Link>
-                <Link to="/diagnostics">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleSubmit(onSubmit)}
                   >Next
-                  </Button>
-                </Link>
+                </Button>
               </Grid>
           </Grid>
         </Paper>

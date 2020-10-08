@@ -17,7 +17,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
 import ChipInput from 'material-ui-chip-input';
 import Chip from "@material-ui/core/Chip";
-import {Link} from "react-router-dom";
+import {Link,useHistory} from "react-router-dom";
+import {useStateMachine} from "little-state-machine";
+import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,15 +53,21 @@ const defaultValues = {
   GSONKeepRulesEnable: "yes",
   LibraryChipInput: [],
   DataClassChipInput: [],
-  DescriptorChipInput:[],
 };
 
 export default function ClassAndDataExceptions() {
   const classes = useStyles();
-  const {register, handleSubmit, control} = useForm({defaultValues});
   const [value, setValue] = React.useState('');
   const [aggObfvalue, setAggObfvalue] = React.useState('');
-  const [defaultValue,setDefaultValue] = React.useState([]);
+  const {state,action} = useStateMachine(updateAction);
+  const {handleSubmit, errors, register, control} = useForm({
+    defaultValues
+  });
+  const history = useHistory();
+  const onSubmit = data => {
+    action(data);
+    history.push("/annotationsAndPackages");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -70,7 +78,7 @@ export default function ClassAndDataExceptions() {
                   <Typography variant="h5">Part 2 Data classes and JARs/AARs</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
-                <form onSubmit={handleSubmit} class={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
                     <label>Do you have any data classes(classes requiring serialization from GSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</label>
                     <Controller
@@ -90,6 +98,7 @@ export default function ClassAndDataExceptions() {
                       }
                       name="GSONKeepRulesEnable"
                       control={control}
+                      ref={register}
                     />
                     <Typography>Known issues with GSON <a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                   </section>
@@ -100,13 +109,13 @@ export default function ClassAndDataExceptions() {
                       <Controller as={
                         <ChipInput
                           aria-label="dataClassChipInput"
-                          value={defaultValue}
                           control={<Chip />}
                           label="Add Optional Data classes"
                         />
                       }
                       name="DataClassChipInput"
                       control={control}
+                      ref={register}
                       />
                       <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
                     </section>
@@ -117,13 +126,13 @@ export default function ClassAndDataExceptions() {
                     <Controller as={
                       <ChipInput
                         aria-label="libraryChipInput"
-                        value={defaultValue}
                         control={<Chip />}
                         label="Add Library Packages here"
                       />
                     }
                     name="LibraryChipInput"
                     control={control}
+                    ref={register}
                     />
                     <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
                   </section>
@@ -139,14 +148,13 @@ export default function ClassAndDataExceptions() {
                   >Back
                   </Button>
                 </Link>
-                <Link to="/annotationsAndPackages">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleSubmit(onSubmit)}
                   >Next
-                  </Button>
-                </Link>
+                </Button>
               </Grid>
           </Grid>
         </Paper>
