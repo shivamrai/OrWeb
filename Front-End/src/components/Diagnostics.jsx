@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -18,6 +18,7 @@ import { useForm, Controller } from "react-hook-form";
 import {Link,useHistory} from "react-router-dom";
 import {useStateMachine} from "little-state-machine";
 import updateAction from './updateAction';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,13 +51,26 @@ const defaultValues = {
 const Diagnostics = (props) => {
   const classes = useStyles();
   const {state,action} = useStateMachine(updateAction);
+  const [resData,setResData] = useState();
+  const [reqData,setReqData] = useState(state.setupDetails);
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
   const history = useHistory();
   const onSubmit = data => {
     action(data);
-    console.log(state);
+    setReqData(state.setupDetails);
+    console.log(reqData);
+    // Axios automatically serializes `{ answer: 42 }` into JSON.
+    axios.post('http://localhost:5000/submit_form',reqData)
+      .then(response=>{
+          //console.log("Data Inserted", response,response.data);
+          setResData({
+              pred :response.data
+          })
+      });
+    console.log(state.setupDetails);
+    console.log(resData);
   };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
