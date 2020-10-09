@@ -53,6 +53,23 @@ def processObfuscationFlags():
         # req = request.form
         # print(req)
         # print(form)
+        print(input_json)
+        gradleConfig,rulesPro= "",""
+        #Part 1 Gradle Setup
+        if(input_json.get("MinifyEnabled")=='yes'):
+            gradleConfig+="minifyEnabled true \n"
+        if(input_json.get("ShrinkResources")=='yes'):
+            gradleConfig+="shrinkResources true \n"
+        if(input_json.get("OptimizationGradle")=='yes'):
+            gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android-optimize.txt\'),\'proguard-rules.pro\' \n"
+        elif(input_json.get("OptimizationGradle")=='no'):
+            gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android.txt\'),\'proguard-rules.pro\' \n"
+        if(input_json.get("optimizationFullModeR8")=='yes'):
+            gradleConfig+="android.enableR8.fullMode=true \n"
+        print(gradleConfig)
+        #Part 2 Rule Setup
+        if(input_json.get("GSONKeepRulesEnable")=='yes'):
+            rulesPro+="-keepclassmembers,allowobfuscation class * { \n@com.google.gson.annotations.SerializedName <fields>;\n}"
         return input_json
     return "success"
 
