@@ -21,9 +21,10 @@ import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexWrap: 'wrap',
+    //flexWrap: 'wrap',
+    // flexGrow: 1,
     '& > *': {
-       margin: theme.spacing(2),
+       margin: theme.spacing(1),
        height: theme.spacing(100),
     },
     '& .MuiTextField-root': {

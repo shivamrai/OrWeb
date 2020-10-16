@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -48,6 +49,8 @@ const defaultValues = {
   PackagesChipInput: [],
   DescriptorChipInput:[],
 };
+let attributesArray = [];
+
 export default function AnnotationsAndPackages() {
   const classes = useStyles();
   const {handleSubmit, errors, register, control} = useForm({
@@ -57,6 +60,7 @@ export default function AnnotationsAndPackages() {
   const {state,action} = useStateMachine(updateAction);
   const history = useHistory();
   const onSubmit = data => {
+    console.log(attributesArray);
     action(data);
     history.push("/diagnostics");
   };
@@ -104,6 +108,29 @@ export default function AnnotationsAndPackages() {
                         ref={register}
                       />
                     <Typography>Some packages might break during obfuscation, those can be added to R8 whitelist.</Typography>
+                  </section>
+                  <section className={classes.action}>
+                    <label>Do you want to keep below attributes? Check all that apply<br /></label>
+                    {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","*Annotation*","EnclosingMethod"].map(name => (
+                      <Controller
+                        key={name}
+                        name={name}
+                        as={
+                          <FormControlLabel
+                            control={<Checkbox value={name} />}
+                            label={name}
+                          />
+                        }
+                        valueName={defaultValues.Attributes}
+                        type="checkbox"
+                        onChange={([e]) => {
+                            return e.target.checked ? e.target.value : "";
+                          }
+                        }
+                        control={control}
+                        ref={register}
+                      />
+                      ))}
                   </section>
                 </form>
               </Grid>

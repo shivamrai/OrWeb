@@ -19,6 +19,7 @@ createStore({
     OptimizationGradle:"",
     optimizationFullModeR8:"",
     GSONKeepRulesEnable: "",
+    Attributes:[],
     LibraryChipInput: [],
     DataClassChipInput: [],
     DescriptorChipInput:[],
@@ -44,7 +45,7 @@ function App() {
           </div>
         </StateMachineProvider>
       </header>
-    </div>
+  </div>
   );
 }
 

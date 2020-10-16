@@ -9,7 +9,7 @@ import { orange } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    //flexGrow: 1,
     backgroundColor: theme.palette.secondary,
   },
   menuButton: {

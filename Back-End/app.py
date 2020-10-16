@@ -54,7 +54,8 @@ def processObfuscationFlags():
         # print(req)
         # print(form)
         print(input_json)
-        gradleConfig,rulesPro= "",""
+        gradleConfig,rulesPro,gradleProperties= "","",""
+        keepRules = "@Keep\n"
         #Part 1 Gradle Setup
         if(input_json.get("MinifyEnabled")=='yes'):
             gradleConfig+="minifyEnabled true \n"
@@ -65,11 +66,36 @@ def processObfuscationFlags():
         elif(input_json.get("OptimizationGradle")=='no'):
             gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android.txt\'),\'proguard-rules.pro\' \n"
         if(input_json.get("optimizationFullModeR8")=='yes'):
-            gradleConfig+="android.enableR8.fullMode=true \n"
+            gradleProperties+="android.enableR8.fullMode=true\n"
         print(gradleConfig)
         #Part 2 Rule Setup
+
+        #flags
+        if(input_json.get("MinifyEnabled")=='no'):
+            rulesPro+="-dontobfuscate\n"
+        if(input_json.get("OverloadAggressively")=='yes'):
+            rulesPro+="-overloadaggressively\n"
+        if(input_json.get("ShrinkResources")=='# NOTE: '):
+            rulesPro+="-dontshrink\n"
+        #keepRules
         if(input_json.get("GSONKeepRulesEnable")=='yes'):
-            rulesPro+="-keepclassmembers,allowobfuscation class * { \n@com.google.gson.annotations.SerializedName <fields>;\n}"
+            rulesPro+="-keepclassmembers,allowobfuscation class * { \n@com.google.gson.annotations.SerializedName <fields>;\n}\n"
+        DataClassChipInput = input_json.get("DataClassChipInput")
+        if(DataClassChipInput):
+            for className in DataClassChipInput:
+                rulesPro+="-keep class "+className+".** { *; } \n"
+        PackagesChipInput = input_json.get("PackagesChipInput")
+        for className in PackagesChipInput:
+            rulesPro+="-keep class "+className+".** { *; } \n"
+        print(rulesPro)
+
+        #Diagnostics
+        if(input_json.get("VerboseStats")=='yes' and "OptimizationGradle"=="No"):
+            rulesPro+="-verbose\n"
+        if(input_json.get("R8OutputCFG")=='yes'):
+            rulesPro+="-printconfiguration \n"
+        if(input_json.get("ShrinkedClassesStats")=='yes'):
+            rulesPro+="-printusage \n"
         return input_json
     return "success"
 

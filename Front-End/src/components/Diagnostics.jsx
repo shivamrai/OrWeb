@@ -51,7 +51,7 @@ const defaultValues = {
 const Diagnostics = (props) => {
   const classes = useStyles();
   const {state,action} = useStateMachine(updateAction);
-  const [resData,setResData] = useState();
+  const [resData,setResData] = useState({"first" : 1});
   const [reqData,setReqData] = useState(state.setupDetails);
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
@@ -65,9 +65,8 @@ const Diagnostics = (props) => {
     axios.post('http://localhost:5000/submit_form',reqData)
       .then(response=>{
           //console.log("Data Inserted", response,response.data);
-          setResData({
-              pred :response.data
-          })
+          console.log(response.data)
+          setResData(response.data)
       });
     console.log(state.setupDetails);
     console.log(resData);
