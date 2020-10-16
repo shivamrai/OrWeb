@@ -50,9 +50,6 @@ def hello():
 def processObfuscationFlags():
     if request.method == "POST":
         input_json = request.get_json(force=True)
-        # req = request.form
-        # print(req)
-        # print(form)
         print(input_json)
         gradleConfig,rulesPro,gradleProperties= "","",""
         keepRules = "@Keep\n"
@@ -69,13 +66,12 @@ def processObfuscationFlags():
             gradleProperties+="android.enableR8.fullMode=true\n"
         print(gradleConfig)
         #Part 2 Rule Setup
-
         #flags
         if(input_json.get("MinifyEnabled")=='no'):
             rulesPro+="-dontobfuscate\n"
         if(input_json.get("OverloadAggressively")=='yes'):
             rulesPro+="-overloadaggressively\n"
-        if(input_json.get("ShrinkResources")=='# NOTE: '):
+        if(input_json.get("ShrinkResources")=='no'):
             rulesPro+="-dontshrink\n"
         #keepRules
         if(input_json.get("GSONKeepRulesEnable")=='yes'):
@@ -84,11 +80,45 @@ def processObfuscationFlags():
         if(DataClassChipInput):
             for className in DataClassChipInput:
                 rulesPro+="-keep class "+className+".** { *; } \n"
+        LibraryChipInput = input_json.get("LibraryChipInput")
+        for className in LibraryChipInput:
+            rulesPro+="-keep class "+className+".** { *; } \n"
+        #suppress warnings for packages/classes/libraries
         PackagesChipInput = input_json.get("PackagesChipInput")
         for className in PackagesChipInput:
-            rulesPro+="-keep class "+className+".** { *; } \n"
+            rulesPro+="-donotwarn "+className+".** \n"
         print(rulesPro)
-
+        if(input_json.get("WebviewRule")=='yes'):
+            rulesPro+="-keepclassmembers class fqcn.of.javascript.interface.for.webview { \npublic *;\n}"
+        #-keepattributes
+        attributes = ""
+        InnerClasses = input_json.get("InnerClasses")
+        Signature = input_json.get("Signature")
+        Deprecated=input_json.get("Deprecated")
+        Annotation=input_json.get("*Annotation*")
+        EnclosingMethod=input_json.get("EnclosingMethod")
+        Exceptions=input_json.get("Exceptions")
+        SourceFile=input_json.get("SourceFile")
+        LineNumberTable=input_json.get("LineNumberTable")
+        if(InnerClasses):
+            attributes+="InnerClasses, "
+        if(Signature):
+            attributes+="Signature, "
+        if(Deprecated):
+            attributes+="Deprecated, "
+        if(Annotation):
+            attributes+="Annotation, "
+        if(EnclosingMethod):
+            attributes+="EnclosingMethod, "
+        if(SourceFile):
+            attributes+="SourceFile, "
+        if(LineNumberTable):
+            attributes+="LineNumberTable, "
+        if(Exceptions):
+            attributes+="Exceptions, "
+        attributes = attributes[:-2]
+        rulesPro+="-keepattributes "+attributes
+        print(rulesPro)
         #Diagnostics
         if(input_json.get("VerboseStats")=='yes' and "OptimizationGradle"=="No"):
             rulesPro+="-verbose\n"

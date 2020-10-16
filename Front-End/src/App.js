@@ -28,7 +28,7 @@ createStore({
     VerboseStats: "",
     R8OutputCFG: "",
     ShrinkedClassesStats:"",
-    RemoveCommonWarnings:"",
+    WebviewRule:"",
   }
 });
 function App() {

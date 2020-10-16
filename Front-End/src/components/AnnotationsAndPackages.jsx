@@ -93,7 +93,7 @@ export default function AnnotationsAndPackages() {
                     <Typography>This is to make sure some specified field types, method return types and method parameter types are not renamed</Typography>
                   </section>
                   <section className={classes.section}>
-                    <label>Do you want to whitelist some packages?</label>
+                    <label>Do you want to suppress warnings for some classes/libraries/packages?</label>
                       <Typography>Add those packages below in format <i>"com.devnn"</i> in below Text Field (case sensitive)</Typography>
                       <Controller as={
                         <ChipInput

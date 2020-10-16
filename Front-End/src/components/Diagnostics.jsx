@@ -150,10 +150,10 @@ const Diagnostics = (props) => {
                     />
                   </section>
                   <section>
-                    <label>Do you want to igone warnings for common android methods?</label>
+                    <label>Do you have JavaScript enabled Webviews, Want to whitelist them from R8?</label>
                     <Controller
                       as={
-                        <RadioGroup aria-label="removeCommonWarnings">
+                        <RadioGroup aria-label="webViewRule">
                           <FormControlLabel
                             value="yes"
                             control={<Radio />}
@@ -166,7 +166,7 @@ const Diagnostics = (props) => {
                           />
                         </RadioGroup>
                       }
-                      name="RemoveCommonWarnings"
+                      name="WebviewRule"
                       control={control}
                       ref = {register}
                     />
