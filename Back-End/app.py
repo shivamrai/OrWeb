@@ -3,20 +3,15 @@ from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
 from flask import request
 
-# from data import cities_count
-
 import os
 import json
 import ast
-# import pandas as pd
-# import numpy as np
 
 app = Flask(__name__, instance_relative_config=True)
 api = Api(app)
 cors = CORS(app, resources={r"/hello": {"origins": "http://localhost:port"}})
 test_config = None
-# def create_app(test_config=None):
-    # create and configure the app
+
 
 app.config.from_mapping(
     SECRET_KEY='dev',
@@ -51,7 +46,8 @@ def processObfuscationFlags():
     if request.method == "POST":
         input_json = request.get_json(force=True)
         print(input_json)
-        gradleConfig,rulesPro,gradleProperties= "","",""
+        output = {}
+        gradleConfig,rulesPro,gradleProperties= "","","android.enableR8 = true \n"
         keepRules = "@Keep\n"
         #Part 1 Gradle Setup
         if(input_json.get("MinifyEnabled")=='yes'):
@@ -126,7 +122,11 @@ def processObfuscationFlags():
             rulesPro+="-printconfiguration \n"
         if(input_json.get("ShrinkedClassesStats")=='yes'):
             rulesPro+="-printusage \n"
-        return input_json
+        output["rulesPro"]= rulesPro
+        output["gradleConfig"] = gradleConfig
+        output["gradleProperties"] = gradleProperties
+        print(output)
+        return output
     return "success"
 
 

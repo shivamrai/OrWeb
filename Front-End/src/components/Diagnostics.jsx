@@ -56,6 +56,9 @@ const Diagnostics = (props) => {
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
+  const [gradleConfig, setGradleConfig] = useState("loading...");
+  const [gradleProperties, setGradleProperties] = useState("loading...");
+  const [rulesPro, setRulesPro] = useState("loading...");
   const history = useHistory();
   const onSubmit = data => {
     action(data);
@@ -63,13 +66,17 @@ const Diagnostics = (props) => {
     console.log(reqData);
     // Axios automatically serializes `{ answer: 42 }` into JSON.
     axios.post('http://localhost:5000/submit_form',reqData)
-      .then(response=>{
+      .then(async (resData)=>{
           //console.log("Data Inserted", response,response.data);
-          console.log(response.data)
-          setResData(response.data)
+          await setResData(resData)
       });
+    console.log(resData);
+    setGradleConfig(resData.gradleConfig);
+    setGradleProperties(resData.gradleProperties);
+    setRulesPro(resData.rulesPro);
     console.log(state.setupDetails);
     console.log(resData);
+    history.push("/result");
   };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
