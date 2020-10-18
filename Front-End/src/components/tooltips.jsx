@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
 import TagFacesIcon from "@material-ui/icons/TagFaces";
 import Avatar from "@material-ui/core/Avatar";
 
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ChipsArray() {
+export default function ToolTips(chipDataFromOutput) {
   const classes = useStyles();
   const OnhighlightBox = React.forwardRef(function MyComponent(props, ref) {
     //  Spread the props to the underlying DOM element.
@@ -31,14 +30,11 @@ export default function ChipsArray() {
       </div>
     );
   });
-
+ 
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: "-keepclasseswithmembers" },
-    { key: 1, label: "jQuery" },
-    { key: 2, label: "Polymer" },
-    { key: 3, label: "React" },
-    { key: 4, label: "Vue.js" }
+    chipDataFromOutput
   ]);
+  const [chipArray, setChipArray] = React.useState(chipDataFromOutput);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -60,21 +56,21 @@ export default function ChipsArray() {
     <Paper component="ul" className={classes.root}>
       {chipData.map((data) => {
         let icon;
-
+        console.log(data);
         if (data.label === "React") {
           icon = <TagFacesIcon />;
         }
 
         return (
-          <li key={data.key}>
-            <Tooltip title={data.key}>
+          <li key={data.label}>
+            <Tooltip title={data[0]}>
               <Chip
                 icon={icon}
-                avatar={<Avatar>{data.label[1]}</Avatar>}
+                avatar={<Avatar>{data.key[1]}</Avatar>}
                 label="Primary clickable"
                 clickable
                 color="primary"
-                label={data.label}
+                label={data.key[0]}
                 className={classes.chip}
               />
             </Tooltip>
