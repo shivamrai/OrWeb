@@ -12,6 +12,8 @@ import ClassAndDataExceptions from "./ClassAndDataExceptions";
 import AnnotationsAndPackages from "./AnnotationsAndPackages";
 import Diagnostics from "./Diagnostics";
 import Result from "./Result";
+import {ModalRoot,ModalProvider} from 'react-multi-modal';
+
 
 const MultiStepForm = () => {
   const location = useLocation();

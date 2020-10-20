@@ -11,6 +11,7 @@ import Introduction from './components/Introduction';
 import MainAppBar  from './components/MainAppBar';
 import BasicSetup from './components/BasicSetup';
 import MultiStepForm from './components/MultiStepForm';
+
 createStore({
   setupDetails: {
     MinifyEnabled: "",

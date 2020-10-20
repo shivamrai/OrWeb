@@ -1,7 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
@@ -50,6 +50,15 @@ const defaultValues = {
   OptimizationGradle:"no",
   OptimizationFullModeR8:"no",
 };
+const ObfuscationTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
 const BasicSetup = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
@@ -76,7 +85,17 @@ const BasicSetup = (props) => {
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section>
-                    <label>Do you want to enable Obfuscation?</label>
+                    <label>Do you want to enable</label>
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Obfuscation</Typography>
+                          {"Obfuscation is the process of hiding code by converting it to meaningless names. This is to enable obfuscation in project's gradle"}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link> Obfuscation?</Link>
+                    </ObfuscationTooltip>
                     <Controller
                       as={
                         <RadioGroup aria-label="minifyEnabled">
