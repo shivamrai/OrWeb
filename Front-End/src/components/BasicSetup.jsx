@@ -21,11 +21,11 @@ import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //flexWrap: 'wrap',
-    // flexGrow: 1,
+    flexWrap: 'wrap',
+    flexGrow: 1,
     '& > *': {
-       margin: theme.spacing(1),
-       height: theme.spacing(100),
+       margin: theme.spacing(5),
+       height: theme.spacing(105),
     },
     '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -78,7 +78,6 @@ const BasicSetup = (props) => {
       <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-          <br />
               <Grid item xs={24} sm={12}>
                   <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
               </Grid>
@@ -117,7 +116,18 @@ const BasicSetup = (props) => {
                     />
                   </section>
                   <section>
-                    <label>Do you want to enable aggresive Obfuscation?</label>
+                    <label>Do you want to enable{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Aggressive Overloading</Typography>
+                          {"This option can make the processed code even smaller (and less comprehensible). Only applicable when obfuscating."}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>Aggressive</Link>
+                    </ObfuscationTooltip>
+                   {" "}Obfuscation?</label>
                     <Controller
                       as={
                         <RadioGroup aria-label="overloadaggressively">
@@ -139,7 +149,18 @@ const BasicSetup = (props) => {
                     />
                   </section>
                   <section>
-                    <label>Do you want to Shrink your output APKs?</label>
+                    <label>Do you want to{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Resource Shrinking</Typography>
+                          {"Code Shrinking or Tree Shaking refers to the removal of unused classes and members from your application or library, primarily to reduce its size. E.g, shrinking can identify library code that your app is not using and remove only that code from your app. Use the same name as much as possible, even if it may not be allowed by the source language. "}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>Shrink</Link>
+                    </ObfuscationTooltip>
+                     {" "}your output APKs?</label>
                     <Controller
                       as={
                         <RadioGroup aria-label="shrinkResources">
@@ -161,7 +182,18 @@ const BasicSetup = (props) => {
                     />
                   </section>
                   <section>
-                    <label>Do you want to enable Optimization?</label>
+                    <label>Do you want to enable{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Code Optimization</Typography>
+                          {"Inspects and rewrites your code to further reduce the size of your app’s DEX files. For example, if R8 detects that the else {} branch for a given if/else statement is never taken, R8 removes the code for the else {} branch. "}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>Optimization</Link>
+                    </ObfuscationTooltip>
+                     {" "}?</label>
                     <Controller
                       as={
                         <RadioGroup aria-label="optimizationGradle">
@@ -181,9 +213,32 @@ const BasicSetup = (props) => {
                       control={control}
                       ref={register}
                     />
+                    <Typography>Optimization is still experimental on R8 and is not recommended to use,{" "}
+                      <ObfuscationTooltip
+                          title={
+                            <React.Fragment>
+                              <Typography color="inherit">Known Issues.</Typography>
+                              {"R8 does not allow you to disable or enable discrete optimizations, or modify the behavior of an optimization. In fact, R8 ignores any ProGuard rules that attempt to modify default optimizations, such as -optimizations and - optimizationpasses. This restriction is important because, as R8 continues to improve, maintaining a standard behavior for optimizations helps the Android Studio team easily troubleshoot and resolve any issues that you might encounter."}
+                            </React.Fragment>
+                          }
+                        >
+                          <Link>read more.</Link>
+                      </ObfuscationTooltip>
+                    </Typography>
                   </section>
                   <section>
-                    <label>Do you want to enable aggresive Optimization?</label>
+                    <label>Do you want to enable{" "}
+                    <ObfuscationTooltip
+                        title={
+                          <React.Fragment>
+                            <Typography color="inherit">Experimental Optimization rules.</Typography>
+                            {"More Optimization Options enabling R8's full mode(when using “full mode”, R8 does not make this assumption and, if R8 asserts that your code otherwise never uses the class at runtime, it removes the class from your app’s final DEX.). Also inserts a rule -allowaccessmodification(Allows R8 to change access modifiers, enabling additional optimizations and additional reorganizations to packages in which classes are contained.)"}
+                          </React.Fragment>
+                        }
+                      >
+                        <Link>aggresive</Link>
+                    </ObfuscationTooltip>
+                    {" "}Optimization?</label>
                     <Controller
                       as={
                         <RadioGroup aria-label="optimizationFullModeR8">
@@ -203,6 +258,7 @@ const BasicSetup = (props) => {
                       control={control}
                       ref={register}
                     />
+                    <Typography>This configuration puts R8 in full mode, R8 performs more aggressive optimizations, meaning that additional ProGuard configuration rules may be required.</Typography>
                   </section>
                 </form>
               </Grid>

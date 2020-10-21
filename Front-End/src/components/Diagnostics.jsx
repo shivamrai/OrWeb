@@ -62,20 +62,16 @@ const Diagnostics = (props) => {
   const history = useHistory();
   const onSubmit = data => {
     action(data);
-    setReqData(state.setupDetails);
-    console.log(reqData);
-    // Axios automatically serializes `{ answer: 42 }` into JSON.
-    axios.post('http://localhost:5000/submit_form',reqData)
-      .then(async (resData)=>{
-          //console.log("Data Inserted", response,response.data);
-          await setResData(resData)
-      });
-    console.log(resData);
-    setGradleConfig(resData.gradleConfig);
-    setGradleProperties(resData.gradleProperties);
-    setRulesPro(resData.rulesPro);
-    console.log(state.setupDetails);
-    console.log(resData);
+    // setReqData(state.setupDetails);
+    // axios.post('http://localhost:5000/submit_form',reqData)
+    //   .then(async (resData)=>{
+    //       await setResData(resData)
+    //   });
+    // setGradleConfig(resData.gradleConfig);
+    // setGradleProperties(resData.gradleProperties);
+    // setRulesPro(resData.rulesPro);
+    // console.log(state.setupDetails);
+    // console.log(resData);
     history.push("/result");
   };
   return (
