@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const defaultValues = {
   PackagesChipInput: [],
-  DescriptorChipInput:[],
+  InterfaceChipInput:[],
 };
 let attributesArray = [];
 
@@ -77,16 +77,16 @@ export default function AnnotationsAndPackages() {
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
-                    <label>Do you want to keep some descriptor classes from obfuscation?</label>
+                    <label>Do you want to keep some interfaces from obfuscation?</label>
                     <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
                     <Controller as={
                       <ChipInput
-                        aria-label="descriptorChipInput"
+                        aria-label="interfaceChipInput"
                         control={<Chip />}
-                        label="Add Library Packages here"
+                        label="Add Interface names here"
                       />
                     }
-                    name="DescriptorChipInput"
+                    name="InterfaceChipInput"
                     control={control}
                     ref={register}
                     />

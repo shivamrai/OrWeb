@@ -156,22 +156,35 @@ const ClassAndDataExceptions = () => {
                     </section>
                   </Grid>
                   <section className={classes.section}>
-                    <label>Are you using external library jars or aars (like OkHttp3,SQLCipher)?</label>
-                    <Typography>Add those packages in below Text Field (case sensitive)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
+                    <label>Do you want to keep specific class names from obfuscation{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">External Libraries</Typography>
+                          {"This will ensure that external libraries will not be obfuscated. Sometimes there are issues accessing methods of external classes and this rule helps to avoid those issues.\n"}
+                          <b>{"\nProguard Considerations: If you are shrinking your code, you need to prevent your Parcelable, Serializable, and Enum class names from being obfuscated as part of the minification process. "}</b>
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>libraries</Link>
+                    </ObfuscationTooltip>
+                    {" "}in your project (like OkHttp3)?</label>
+                    <Typography>Add those classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                     <Controller as={
                       <ChipInput
                         aria-label="libraryChipInput"
                         control={<Chip />}
-                        label="Add Library Packages here"
+                        label="Add Full names here."
                       />
                     }
                     name="LibraryChipInput"
                     control={control}
                     ref={register}
                     />
-                    <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
+                    <Typography>A resource is loaded with a relative path so the package of this class must be preserved.</Typography>
+                    <Typography>Specify complete names so that correct packages can be targeted, eg for OkHttp3 <i>okhttp3.internal.publicsuffix.PublicSuffixDatabase </i><a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro">Read about the fix here.</a></Typography>
+                    <Typography>E.g. for ProGuard considerations <i>com.path.to.your.EnumArg/ParcelableArg/SerializableArg </i><a href="https://developer.android.com/guide/navigation/navigation-pass-data#proguard_considerations">More about this issue</a></Typography>
                   </section>
-
               </form>
             </Grid>
               <Grid item xs={24} sm={12}>

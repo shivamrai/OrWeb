@@ -88,11 +88,10 @@ def processObfuscationFlags():
         DataClassChipInput = input_json.get("DataClassChipInput")
         if(DataClassChipInput):
             for className in DataClassChipInput:
-                rulesPro+="-keep class "+className+".** {\n!transient <fields>; \n} \n"
+                rulesPro+=keepRules(className,"class")
         LibraryChipInput = input_json.get("LibraryChipInput")
         for className in LibraryChipInput:
-            rulesPro+=keepClassRules(className)
-
+            rulesPro+="-keepnames class "+(className)
         #suppress warnings for packages/classes/libraries
         PackagesChipInput = input_json.get("PackagesChipInput")
         for className in PackagesChipInput:
@@ -155,19 +154,9 @@ def processObfuscationFlags():
         print(output)
         return output
     return "success"
-def keepClassRules(className):
-    dotCounter=0
-    for chars in className:
-        if(char==','):
-            dotCounter+=1
-    if(dotCounter==3):
-        return "-keep class "+className+" { *; } \n"
-    if(dotCounter==2):
-        return "-keep class "+className+".* { *; } \n"
-    elif(dotCounter==1):
-        return "-keep class "+className+".** { *; } \n"
-    elif(dotCounter==0):
-        return "-keep class "+className+".** { *; } \n"
+    def keepRules(className,type):
+        return "-keep "+ type + " " +className+".** { *; } \n"
+
 definitions =  {
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",
     "-dontobfuscate	": "Do not apply renaming, regardless of other configuration.",
@@ -180,7 +169,9 @@ definitions =  {
     "-keepclasseswithmembernames": "Prevent matching classes and matching members from being renamed if the corresponding class contains all of the specified members.",
     "-keeppackagenames": "Don’t rename packages which match the filter.",
     "-overloadaggressively": "Use the same name as much as possible, even if it may not be allowed by the source language.",
-    "-dontskipnonpubliclibraryclassmembers":" Do not skip on non public library class members"}
+    "-dontskipnonpubliclibraryclassmembers":" Do not skip on non public library class members",
+    "-keepnames":"Specifies classes and class members whose names are to be preserved, if they aren't removed in the shrinking phase."
+    }
 class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}

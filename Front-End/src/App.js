@@ -23,7 +23,7 @@ createStore({
     Attributes:[],
     LibraryChipInput: [],
     DataClassChipInput: [],
-    DescriptorChipInput:[],
+    InterfaceChipInput:[],
     PackagesChipInput: [],
     DescriptorChipInput:[],
     VerboseStats: "",
