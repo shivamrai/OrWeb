@@ -14,9 +14,12 @@ import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
 import TagFacesIcon from "@material-ui/icons/TagFaces";
 import Avatar from "@material-ui/core/Avatar";
+import {Link,useHistory} from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 
 
 const useStyles = makeStyles((theme) => ({
+
   root: {
     flexWrap: 'wrap',
     display: "flex",
@@ -60,7 +63,10 @@ const defaultValues = {
 };
 export default function Result() {
   const classes = useStyles();
-  const {state} = useStateMachine(updateAction);
+  const {state,action} = useStateMachine(updateAction);
+  const {handleSubmit, errors, register, control} = useForm({
+    defaultValues
+  });
   const aceGradlePropertiesRef = useRef(null);
   const aceGradleConfigRef = useRef(null);
   const aceRulesProRef = useRef(null);
@@ -68,7 +74,11 @@ export default function Result() {
   const [gradleConfig, setGradleConfig] = useState("loading...");
   const [gradleProperties, setGradleProperties] = useState("loading...");
   const [rulesPro, setRulesPro] = useState("loading...");
-  
+  const history = useHistory();
+  const onSubmit = data => {
+    action(data);
+    history.push("/");
+  };
   const [chipData, setChipData] = useState([]);
   const fetchData = () =>{
     //console.log(data);
@@ -93,6 +103,7 @@ export default function Result() {
   useEffect(() => {
       fetchData();
     },[gradleConfig,gradleProperties,rulesPro]);
+
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -204,10 +215,10 @@ export default function Result() {
               <Grid item xs={24} sm={12}>
                   <Button
                     type="submit"
-                    disabled
+                    onClick={handleSubmit(onSubmit)}
                     variant="contained"
                     color="secondary"
-                  >Next</Button>
+                  >Start Over</Button>
               </Grid>
           </Grid>
         </Paper>

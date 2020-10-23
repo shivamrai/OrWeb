@@ -64,30 +64,37 @@ export default function Risks() {
     <div className={classes.root}>
         
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open dialog
+        Read about Risks
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          Understanding OrWeb and its risks
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-            lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-            auctor fringilla.
-          </Typography>
+          <ul>
+            <li>
+            <Typography gutterBottom>
+            This is an adaptive tool and we are not possible for loss of data.
+            </Typography>
+            </li>
+            <li>
+            <Typography gutterBottom>
+            This tool provides a preliminary set of rules to work on, we would suggest fine tuning rules after generating from this tool.
+            </Typography>
+            </li>
+            <li>
+            <Typography gutterBottom>
+            This is an open source tool that can be used for any Android Project.
+            </Typography>
+            </li>
+          </ul>
+            <Typography gutterBottom>
+            Click outside dialog to close it.
+            </Typography>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
+            Acknowleged
           </Button>
         </DialogActions>
       </Dialog>
