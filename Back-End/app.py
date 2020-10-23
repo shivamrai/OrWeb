@@ -62,7 +62,7 @@ def processObfuscationFlags():
             gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android-optimize.txt\'),\'proguard-rules.pro\' \n"
         elif(input_json.get("OptimizationGradle")=='no'):
             gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android.txt\'),\'proguard-rules.pro\' \n"
-        if(input_json.get("optimizationFullModeR8")=='yes' and OptimizationGradle=="yes"):
+        if(input_json.get("OptimizationFullModeR8")=='yes' and OptimizationGradle=="yes"):
             gradleProperties+="android.enableR8.fullMode=true\n"
             rulesPro+="-allowaccessmodification\n"
         print(gradleConfig)
@@ -93,18 +93,29 @@ def processObfuscationFlags():
         for className in LibraryChipInput:
             rulesPro+="-keepnames class "+(className)
         #suppress warnings for packages/classes/libraries
-        PackagesChipInput = input_json.get("PackagesChipInput")
-        for className in PackagesChipInput:
+        WarningChipInput = input_json.get("WarningChipInput")
+        for className in WarningChipInput:
             rulesPro+="-donotwarn "+className+".** \n"
+            warnDict = {}
+            warnDict["key"]="-dontwarn"
+            warnDict["label"] = definitions.get("-dontwarn")
+            hints.append(warnDict)
+        #interface keep rules
+        InterfaceChipInput = input_json.get("InterfaceChipInput")
+        for className in InterfaceChipInput:
+            rulesPro+=keepRules(className,"interface")
         if "keep" in rulesPro:
             keepDict = {}
             keepDict["key"]="-keep"
             keepDict["label"] = definitions.get("-keep")
             hints.append(keepDict)
-
-        print(rulesPro)
+        #javascript webview issue rule
         if(input_json.get("WebviewRule")=='yes'):
             rulesPro+="-keepclassmembers class fqcn.of.javascript.interface.for.webview { \npublic *;\n}"
+        if "keepclassmembers" in rulesPro:
+            keepClassMembersDict = {}
+            keepClassMembersDict["key"]="-keepclassmembers"
+            keepClassMembersDict["label"]=definitions.get("-keepclassmembers")
         #-keepattributes
         attributes = ""
         InnerClasses = input_json.get("InnerClasses")
@@ -115,6 +126,8 @@ def processObfuscationFlags():
         Exceptions=input_json.get("Exceptions")
         SourceFile=input_json.get("SourceFile")
         LineNumberTable=input_json.get("LineNumberTable")
+        Synthetic= input_json.get("Synthetic")
+        MethodParameters = input_json.get("MethodParameters")
         if(InnerClasses):
             attributes+="InnerClasses, "
         if(Signature):
@@ -131,8 +144,12 @@ def processObfuscationFlags():
             attributes+="LineNumberTable, "
         if(Exceptions):
             attributes+="Exceptions, "
+        if(Synthetic):
+            attributes+="Synthetic, "
+        if(MethodParameters):
+            attributes+="MethodParameters, "
         attributes = attributes[:-2]
-        if(InnerClasses or Signature or Deprecated or Annotation or EnclosingMethod or SourceFile or LineNumberTable or Exceptions):
+        if(InnerClasses or Signature or Deprecated or Annotation or EnclosingMethod or SourceFile or LineNumberTable or Exceptions or Synthetic or MethodParameters):
             rulesPro+="-keepattributes "+attributes
             attributeDict = {}
             attributeDict["key"] = "-keepattributes"
@@ -154,14 +171,15 @@ def processObfuscationFlags():
         print(output)
         return output
     return "success"
-    def keepRules(className,type):
-        return "-keep "+ type + " " +className+".** { *; } \n"
+def keepRules(className,type):
+    return "-keep "+ type + " " +className+".** { *; } \n"
 
 definitions =  {
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",
     "-dontobfuscate	": "Do not apply renaming, regardless of other configuration.",
     "-dontoptimize": "Do not optimize the code, regardless of other configuration. This is part of the default configuration.",
     "-dontshrink": "Do not remove any classes, methods, or fields, regardless of other configuration. (ProGuard docs)",
+    "-dontwarn": "Specifies not to warn about unresolved references and other important problems at all. The optional filter is a regular expression; ProGuard doesn't print warnings about classes with matching names.",
     "-keepattributes": "Allows you to specify supported Java™ attributes for R8 to retain in the code.8 does not respect rules regarding Synthetic, Deprecated, or MethodParameters and will remove these attributes regardless of what is configured in -keepattributes.",
     "-printconfiguration": "Outputs the used configuration rules to the specified file, or to stdout if there is no file specified.",
     "-printusage": "Outputs a list of the classes, methods, and fields which were removed during shrinking to the specified file, or to stdout if there is no file specified.",
@@ -171,6 +189,7 @@ definitions =  {
     "-overloadaggressively": "Use the same name as much as possible, even if it may not be allowed by the source language.",
     "-dontskipnonpubliclibraryclassmembers":" Do not skip on non public library class members",
     "-keepnames":"Specifies classes and class members whose names are to be preserved, if they aren't removed in the shrinking phase."
+    "-keepclassmembers":"Exclude matching members in matching classes from shrinking, optimization, and renaming."
     }
 class HelloWorld(Resource):
     def get(self):
