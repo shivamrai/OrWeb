@@ -157,12 +157,20 @@ def processObfuscationFlags():
             hints.append(attributeDict)
         print(rulesPro)
         #Diagnostics
-        if(input_json.get("VerboseStats")=='yes' and "OptimizationGradle"=="No"):
-            rulesPro+="-verbose\n"
+        diagnosticsDict = {}
+        if(input_json.get("PrintseedsStats")=='yes'):
+            rulesPro+="-printseeds\n"
+            diagnosticsDict["key"] = "-printseeds"
+            diagnosticsDict["label"] = definitions.get("-printseeds")
         if(input_json.get("R8OutputCFG")=='yes'):
             rulesPro+="-printconfiguration \n"
+            diagnosticsDict["key"] = "-printconfiguration"
+            diagnosticsDict["label"] = definitions.get("-printconfiguration")
         if(input_json.get("ShrinkedClassesStats")=='yes'):
             rulesPro+="-printusage \n"
+            diagnosticsDict["key"] = "-printusage"
+            diagnosticsDict["label"] = definitions.get("-printusage")
+        hints.append(diagnosticsDict)
         hints.pop(0)
         output["rulesPro"]= rulesPro
         output["gradleConfig"] = gradleConfig
@@ -178,7 +186,7 @@ definitions =  {
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",
     "-dontobfuscate	": "Do not apply renaming, regardless of other configuration.",
     "-dontoptimize": "Do not optimize the code, regardless of other configuration. This is part of the default configuration.",
-    "-dontshrink": "Do not remove any classes, methods, or fields, regardless of other configuration. (ProGuard docs)",
+    "-dontshrink": "Do not remove any classes, methods, or fields, regardless of other configuration. ",
     "-dontwarn": "Specifies not to warn about unresolved references and other important problems at all. The optional filter is a regular expression; ProGuard doesn't print warnings about classes with matching names.",
     "-keepattributes": "Allows you to specify supported Java™ attributes for R8 to retain in the code.8 does not respect rules regarding Synthetic, Deprecated, or MethodParameters and will remove these attributes regardless of what is configured in -keepattributes.",
     "-printconfiguration": "Outputs the used configuration rules to the specified file, or to stdout if there is no file specified.",
@@ -188,8 +196,9 @@ definitions =  {
     "-keeppackagenames": "Don’t rename packages which match the filter.",
     "-overloadaggressively": "Use the same name as much as possible, even if it may not be allowed by the source language.",
     "-dontskipnonpubliclibraryclassmembers":" Do not skip on non public library class members",
-    "-keepnames":"Specifies classes and class members whose names are to be preserved, if they aren't removed in the shrinking phase."
-    "-keepclassmembers":"Exclude matching members in matching classes from shrinking, optimization, and renaming."
+    "-keepnames":"Specifies classes and class members whose names are to be preserved, if they aren't removed in the shrinking phase.",
+    "-keepclassmembers":"Exclude matching members in matching classes from shrinking, optimization, and renaming.",
+    "-printseeds":"Outputs a list of the classes, methods, and fields which match the keep rules to the specified file, or to stdout if there is no file specified. "
     }
 class HelloWorld(Resource):
     def get(self):

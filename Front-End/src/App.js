@@ -25,7 +25,7 @@ createStore({
     DataClassChipInput: [],
     InterfaceChipInput:[],
     WarningChipInput: [],
-    VerboseStats: "",
+    PrintseedsStats: "",
     R8OutputCFG: "",
     ShrinkedClassesStats:"",
     WebviewRule:"",

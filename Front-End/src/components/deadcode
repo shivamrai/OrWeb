@@ -1,0 +1,22 @@
+// <section>
+//   <label>Do you have JavaScript enabled Webviews, Want to whitelist them from R8?</label>
+//   <Controller
+//     as={
+//       <RadioGroup aria-label="webViewRule">
+//         <FormControlLabel
+//           value="yes"
+//           control={<Radio />}
+//           label="Yes"
+//         />
+//         <FormControlLabel
+//           value="no"
+//           control={<Radio />}
+//           label="No"
+//         />
+//       </RadioGroup>
+//     }
+//     name="WebviewRule"
+//     control={control}
+//     ref = {register}
+//   />
+// </section>
