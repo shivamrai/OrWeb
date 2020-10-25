@@ -76,7 +76,7 @@ def processObfuscationFlags():
             hints.append(obfuscateDict)
         if(input_json.get("OverloadAggressively")=='yes' and MinifyEnabled == 'yes'):
             rulesPro+="-overloadaggressively\n"
-        if(input_json.get("ShrinkResources")=='no'):
+        if(input_json.get("ShrinkResources")=='no' and OptimizationGradle=='yes'):
             rulesPro+="-dontshrink\n"
             hintDict = {}
             hintDict["key"] = "-dontshrink	"
@@ -88,7 +88,7 @@ def processObfuscationFlags():
         DataClassChipInput = input_json.get("DataClassChipInput")
         if(DataClassChipInput):
             for className in DataClassChipInput:
-                rulesPro+=keepRules(className,"class")
+                rulesPro+=keepRulesAdd(className,"class")
         LibraryChipInput = input_json.get("LibraryChipInput")
         for className in LibraryChipInput:
             rulesPro+="-keepnames class "+(className)
@@ -103,7 +103,7 @@ def processObfuscationFlags():
         #interface keep rules
         InterfaceChipInput = input_json.get("InterfaceChipInput")
         for className in InterfaceChipInput:
-            rulesPro+=keepRules(className,"interface")
+            rulesPro+=keepRulesAdd(className,"interface")
         if "keep" in rulesPro:
             keepDict = {}
             keepDict["key"]="-keep"
@@ -179,7 +179,7 @@ def processObfuscationFlags():
         print(output)
         return output
     return "success"
-def keepRules(className,type):
+def keepRulesAdd(className,type):
     return "-keep "+ type + " " +className+".** { *; } \n"
 
 definitions =  {

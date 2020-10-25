@@ -12,10 +12,9 @@ import {useStateMachine} from "little-state-machine";
 import axios from 'axios';
 import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
-import TagFacesIcon from "@material-ui/icons/TagFaces";
 import Avatar from "@material-ui/core/Avatar";
-import {Link,useHistory} from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import {useHistory} from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 
 const useStyles = makeStyles((theme) => ({

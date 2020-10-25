@@ -17,7 +17,7 @@ import updateAction from './updateAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexWrap: 'wrap',
+    //flexWrap: 'wrap',
     flexGrow: 1,
     '& > *': {
        margin: theme.spacing(5),
