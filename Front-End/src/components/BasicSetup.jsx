@@ -14,11 +14,15 @@ import { useForm, Controller } from "react-hook-form";
 import {Link,useHistory} from "react-router-dom";
 import {useStateMachine} from "little-state-machine";
 import updateAction from './updateAction';
+import Box from '@material-ui/core/Box';
+import { pink } from '@material-ui/core/colors';
+import Switch from '@material-ui/core/Switch';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //flexWrap: 'wrap',
-    flexGrow: 1,
+    flexWrap: 'wrap',
+    //flexGrow: 1,
     '& > *': {
        margin: theme.spacing(5),
        height: theme.spacing(105),
@@ -37,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
+    alignItems: 'flex-start',
+    alignContent: 'flex-start', 
+  },
+  grid: {
+    //alignItems: 'center',
+    //alignContent: 'center', 
   },
 }));
 const defaultValues = {
@@ -55,9 +65,23 @@ const ObfuscationTooltip = withStyles((theme) => ({
     border: '1px solid #dadde9',
   },
 }))(Tooltip);
+const PurpleSwitch = withStyles({
+  switchBase: {
+    color: pink[300],
+    '&$checked': {
+      color: pink[500],
+    },
+    '&$checked + $track': {
+      backgroundColor: pink[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 const BasicSetup = (props) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState(true);
   const [aggObfvalue, setAggObfvalue] = React.useState('');
   const {state,action} = useStateMachine(updateAction);
   const {handleSubmit, errors, register, control} = useForm({
@@ -71,10 +95,9 @@ const BasicSetup = (props) => {
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
-      <div className={classes.root}>
-        <Paper elevation={1}>
+        <Paper elevation={1} >
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center">
                   <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
@@ -110,6 +133,24 @@ const BasicSetup = (props) => {
                       control={control}
                       ref={register}
                     />
+                  </section>
+                  <section>
+                    <Controller 
+                      as={
+                        <FormControlLabel
+                          control={<PurpleSwitch value={(true)}
+                          //onChange={([e]) => {return e.target.checked ? e.target.value : {value};}}
+                          />
+                        } 
+                          label="Advanced Mode"
+                          type="checkbox"
+                          
+                        />}
+                      name="AdvancedOverload"
+                      value={false}
+                      control = {control}
+                      ref = {register}
+                     />
                   </section>
                   <section>
                     <label>Do you want to enable{" "}
@@ -258,7 +299,7 @@ const BasicSetup = (props) => {
                   </section>
                 </form>
               </Grid>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center" >
                 <Link to="/">
                   <Button
                     type="submit"
@@ -277,7 +318,6 @@ const BasicSetup = (props) => {
               </Grid>
           </Grid>
         </Paper>
-      </div>
     </Container>
   );
 }

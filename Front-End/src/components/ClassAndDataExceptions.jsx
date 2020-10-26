@@ -7,11 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import Select from './Select';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
@@ -27,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       '& > *': {
         margin: theme.spacing(2),
-        height: theme.spacing(100),
+        //height: theme.spacing(100),
       },
       '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -187,7 +183,7 @@ const ClassAndDataExceptions = () => {
                   </section>
               </form>
             </Grid>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center">
                 <Link to="/basicSetup">
                   <Button
                     type="submit"
