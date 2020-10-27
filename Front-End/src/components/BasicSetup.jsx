@@ -21,11 +21,12 @@ import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    //display: 'flex',
     flexWrap: 'wrap',
-    //flexGrow: 1,
+    flexGrow: 1,
     '& > *': {
        margin: theme.spacing(5),
-       height: theme.spacing(105),
+       //height: theme.spacing(105),
     },
     '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -42,11 +43,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     alignItems: 'flex-start',
-    alignContent: 'flex-start', 
+    alignContent: 'flex-start',
+  },
+  button: {
+    margin: theme.spacing(1),
   },
   grid: {
     //alignItems: 'center',
-    //alignContent: 'center', 
+    //alignContent: 'center',
   },
 }));
 const defaultValues = {
@@ -55,6 +59,7 @@ const defaultValues = {
   ShrinkResources:"no",
   OptimizationGradle:"no",
   OptimizationFullModeR8:"no",
+  AdvancedOverload: "no",
 };
 const ObfuscationTooltip = withStyles((theme) => ({
   tooltip: {
@@ -92,6 +97,10 @@ const BasicSetup = (props) => {
     action(data);
     history.push("/classAndDataExceptions");
   };
+  const onBack = data => {
+    //action(data);
+    history.push("/");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
@@ -103,7 +112,7 @@ const BasicSetup = (props) => {
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section>
-                    <label>Do you want to enable</label>
+                    <label>Do you want to enable{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -112,8 +121,8 @@ const BasicSetup = (props) => {
                         </React.Fragment>
                       }
                     >
-                      <Link> Obfuscation?</Link>
-                    </ObfuscationTooltip>
+                      <Link>Obfuscation</Link>
+                    </ObfuscationTooltip>{" "}?</label>
                     <Controller
                       as={
                         <RadioGroup aria-label="minifyEnabled">
@@ -135,56 +144,31 @@ const BasicSetup = (props) => {
                     />
                   </section>
                   <section>
-                    <Controller 
+                    <Controller
                       as={
                         <FormControlLabel
-                          control={<PurpleSwitch value={(true)}
-                          //onChange={([e]) => {return e.target.checked ? e.target.value : {value};}}
-                          />
-                        } 
-                          label="Advanced Mode"
+                          control={<PurpleSwitch value="yes"/>}
+
                           type="checkbox"
-                          
                         />}
                       name="AdvancedOverload"
                       value={false}
                       control = {control}
                       ref = {register}
                      />
+                     <label>Aggressive{" "}<ObfuscationTooltip
+                       title={
+                         <React.Fragment>
+                           <Typography color="inherit">Aggressive Overloading</Typography>
+                           {"This option can make the processed code even smaller (and less comprehensible). Only applicable when obfuscating."}
+                         </React.Fragment>
+                       }
+                     >
+                       <Link>Obfuscation</Link>
+                     </ObfuscationTooltip>
+                    {" "}</label>
                   </section>
-                  <section>
-                    <label>Do you want to enable{" "}
-                    <ObfuscationTooltip
-                      title={
-                        <React.Fragment>
-                          <Typography color="inherit">Aggressive Overloading</Typography>
-                          {"This option can make the processed code even smaller (and less comprehensible). Only applicable when obfuscating."}
-                        </React.Fragment>
-                      }
-                    >
-                      <Link>Aggressive</Link>
-                    </ObfuscationTooltip>
-                   {" "}Obfuscation?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="overloadaggressively">
-                          <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="OverloadAggressively"
-                      control={control}
-                      ref={register}
-                    />
-                  </section>
+
                   <section>
                     <label>Do you want to{" "}
                     <ObfuscationTooltip
@@ -263,58 +247,58 @@ const BasicSetup = (props) => {
                       </ObfuscationTooltip>
                     </Typography>
                   </section>
-                  <section>
-                    <label>Do you want to enable{" "}
-                    <ObfuscationTooltip
-                        title={
-                          <React.Fragment>
-                            <Typography color="inherit">Experimental Optimization rules.</Typography>
-                            {"More Optimization Options enabling R8's full mode(when using “full mode”, R8 does not make this assumption and, if R8 asserts that your code otherwise never uses the class at runtime, it removes the class from your app’s final DEX.). Also inserts a rule -allowaccessmodification(Allows R8 to change access modifiers, enabling additional optimizations and additional reorganizations to packages in which classes are contained.)"}
-                          </React.Fragment>
-                        }
-                      >
-                        <Link>aggresive</Link>
-                    </ObfuscationTooltip>
-                    {" "}Optimization?</label>
-                    <Controller
-                      as={
-                        <RadioGroup aria-label="optimizationFullModeR8">
+
+                    <section>
+                      <Controller
+                        as={
                           <FormControlLabel
-                            value="yes"
-                            control={<Radio />}
-                            label="Yes"
-                          />
-                          <FormControlLabel
-                            value="no"
-                            control={<Radio />}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      }
-                      name="OptimizationFullModeR8"
-                      control={control}
-                      ref={register}
-                    />
+                            control={<PurpleSwitch value="yes"/>}
+                            type="checkbox"
+                          />}
+                        name="OptimizationFullModeR8"
+                        value={false}
+                        control = {control}
+                        ref = {register}
+                       />
+                       <label>Full Mode{" "}<ObfuscationTooltip
+                         title={
+                           <React.Fragment>
+                             <Typography color="inherit">Experimental Optimization rules.</Typography>
+                               {"More Optimization Options enabling R8's full mode(when using “full mode”, R8 does not make this assumption and, if R8 asserts that your code otherwise never uses the class at runtime, it removes the class from your app’s final DEX.). Also inserts a rule -allowaccessmodification(Allows R8 to change access modifiers, enabling additional optimizations and additional reorganizations to packages in which classes are contained.)"}
+                           </React.Fragment>
+                         }
+                       >
+                         <Link>Optimization</Link>
+                       </ObfuscationTooltip>
+                      {" "}</label>
+
                     <Typography>This configuration puts R8 in full mode, R8 performs more aggressive optimizations, meaning that additional ProGuard configuration rules may be required.</Typography>
                   </section>
                 </form>
               </Grid>
-              <Grid item xs={24} sm={12} container justify="center" >
-                <Link to="/">
+              <Grid item xs={6} sm={3} container justify="center" >
+              </Grid>
+              <Grid item xs={6} sm={3} container justify="center" >
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
+                    fullWidth
+                    onClick={handleSubmit(onBack)}
                   >Back
                   </Button>
-                </Link>
+                    </Grid>
+                      <Grid item xs={6} sm={3} container justify="center" >
                   <Button
                     type="submit"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
+                    fullWidth
                     onClick={handleSubmit(onSubmit)}
                   >Next
                   </Button>
+              </Grid>
+              <Grid item xs={6} sm={3} container justify="center" >
               </Grid>
           </Grid>
         </Paper>

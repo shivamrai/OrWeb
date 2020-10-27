@@ -25,9 +25,10 @@ import updateAction from './updateAction';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexWrap: 'wrap',
+    flexGrow: 1,
     '& > *': {
-       margin: theme.spacing(2),
-       height: theme.spacing(100),
+       margin: theme.spacing(5),
+       //height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -39,10 +40,11 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%',
-    marginTop: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    alignItems: 'flex-start',
+    alignContent: 'flex-start',
   },
 }));
 const defaultValues = {
@@ -59,7 +61,7 @@ const ObfuscationTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-export default function AnnotationsAndPackages() {
+ const AnnotationsAndPackages = () => {
   const classes = useStyles();
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
@@ -68,36 +70,37 @@ export default function AnnotationsAndPackages() {
   const {state,action} = useStateMachine(updateAction);
   const history = useHistory();
   const onSubmit = data => {
-    //console.log(attributesArray);
     action(data);
     history.push("/diagnostics");
   };
-
+  const onBack = data => {
+    //action(data);
+    history.push("/classAndDataExceptions");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
       <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center">
                   <Typography variant="h5">Part 3 Annotations and Descriptor Class setup</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
-                    <label>Do you want to keep some{" "}
-                    <ObfuscationTooltip
-                      title={
-                        <React.Fragment>
-                          <Typography color="inherit">Interface Exceptions</Typography>
-                          {"Specify interface and interface members (fields and methods) to be preserved as entry points to your code. In order to process a library, you should specify all publicly accessible interfaces."}
-                        </React.Fragment>
-                      }
-                    >
-                      <Link>interfaces</Link>
-                    </ObfuscationTooltip>
-                    {" "} from obfuscation?</label>
-                    <Typography>Add those Interfaces in format <i>"class in.bypass or name of interface"</i> in below Text Field (case sensitive).</Typography>
+                  <Typography>Do you want to keep some{" "}
+                  <ObfuscationTooltip
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">Interface Exceptions</Typography>
+                        {"Specify interface and interface members (fields and methods) to be preserved as entry points to your code. In order to process a library, you should specify all publicly accessible interfaces."}
+                      </React.Fragment>
+                    }
+                  >
+                    <Link>interfaces</Link>
+                  </ObfuscationTooltip>
+                  {" "} from obfuscation?</Typography>
                     <Controller as={
                       <ChipInput
                         aria-label="interfaceChipInput"
@@ -109,10 +112,12 @@ export default function AnnotationsAndPackages() {
                     control={control}
                     ref={register}
                     />
+
+                    <p>Add those Interfaces in format <i>"class in.bypass or name of interface"</i> in below Text Field (case sensitive).</p>
                     <Typography>This is to make sure some interfaces, either required in application or libraries are skipped from renaming.</Typography>
                   </section>
                   <section className={classes.section}>
-                    <label>Do you want to suppress{" "}
+                    <Typography>Do you want to suppress{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -123,7 +128,7 @@ export default function AnnotationsAndPackages() {
                     >
                       <Link>warnings</Link>
                     </ObfuscationTooltip>
-                     {" "}for some classes/libraries/packages?</label>
+                     {" "}for some classes/libraries/packages?</Typography>
                       <Typography>Add those packages below in format <i>"com.devnn"</i> in below Text Field (case sensitive)</Typography>
                       <Controller as={
                         <ChipInput
@@ -176,26 +181,34 @@ export default function AnnotationsAndPackages() {
                   </section>
                 </form>
               </Grid>
-              <Grid item xs={24} sm={12}>
-                <Link to="/classAndDataExceptions">
+              <Grid item xs={6} sm={3} container justify="center" >
+              </Grid>
+              <Grid item xs={6} sm={3} container justify="center" >
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
+                    fullWidth
+                    onClick={handleSubmit(onBack)}
                   >Back
                   </Button>
-                </Link>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleSubmit(onSubmit)}
+                    </Grid>
+                      <Grid item xs={6} sm={3} container justify="center" >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={handleSubmit(onSubmit)}
                   >Next
-                </Button>
+                  </Button>
               </Grid>
+              <Grid item xs={6} sm={3} container justify="center" >
+            </Grid>
           </Grid>
         </Paper>
       </div>
     </Container>
   );
 }
+export default AnnotationsAndPackages;

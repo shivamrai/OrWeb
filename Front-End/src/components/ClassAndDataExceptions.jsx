@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
       alignContent:"left",
       justifyContent: "flex-start",
     },
+    button: {
+      margin: theme.spacing(1),
+    },
 }));
 const defaultValues = {
   GSONKeepRulesEnable: "yes",
@@ -76,13 +79,16 @@ const ClassAndDataExceptions = () => {
     action(data);
     history.push("/annotationsAndPackages");
   };
+  const onBack = data => {
+    //action(data);
+    history.push("/basicSetup");
+  };
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
-      <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center">
                   <Typography variant="h5">Part 2 Data classes and JARs/AARs</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" justifyContent="flex-start">
@@ -183,26 +189,32 @@ const ClassAndDataExceptions = () => {
                   </section>
               </form>
             </Grid>
-              <Grid item xs={24} sm={12} container justify="center">
-                <Link to="/basicSetup">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                  >Back
-                  </Button>
-                </Link>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleSubmit(onSubmit)}
-                  >Next
-                </Button>
-              </Grid>
+            <Grid item xs={6} sm={3} container justify="center" >
+            </Grid>
+            <Grid item xs={6} sm={3} container justify="center" >
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={handleSubmit(onBack)}
+              >Back
+              </Button>
+                </Grid>
+                  <Grid item xs={6} sm={3} container justify="center" >
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={handleSubmit(onSubmit)}
+              >Next
+              </Button>
+            </Grid>
+            <Grid item xs={6} sm={3} container justify="center" >
+            </Grid>
           </Grid>
         </Paper>
-      </div>
     </Container>
   );
 }

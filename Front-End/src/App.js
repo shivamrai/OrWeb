@@ -14,6 +14,7 @@ import MultiStepForm from './components/MultiStepForm';
 
 createStore({
   setupDetails: {
+    AdvancedOverload: "",
     MinifyEnabled: "",
     OverloadAggressively: "",
     ShrinkResources:"",
