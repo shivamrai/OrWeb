@@ -150,7 +150,7 @@ def processObfuscationFlags():
             attributes+="MethodParameters, "
         attributes = attributes[:-2]
         if(InnerClasses or Signature or Deprecated or Annotation or EnclosingMethod or SourceFile or LineNumberTable or Exceptions or Synthetic or MethodParameters):
-            rulesPro+="-keepattributes "+attributes
+            rulesPro+="-keepattributes "+attributes+"\n"
             attributeDict = {}
             attributeDict["key"] = "-keepattributes"
             attributeDict["label"] = definitions.get("-keepattributes")

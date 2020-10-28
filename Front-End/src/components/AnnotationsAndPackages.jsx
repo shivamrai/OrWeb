@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     '& > *': {
        margin: theme.spacing(5),
-       //height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -45,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     alignItems: 'flex-start',
     alignContent: 'flex-start',
+  },
+  section :{
+    margin: theme.spacing(1),
+  },
+  grid: {
+    margin: theme.spacing(2),
   },
 }));
 const defaultValues = {
@@ -83,8 +88,11 @@ const ObfuscationTooltip = withStyles((theme) => ({
       <div className={classes.root}>
         <Paper elevation={1}>
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12} container justify="center">
+              <Grid item xs={12} container justify="center">
                   <Typography variant="h5">Part 3 Annotations and Descriptor Class setup</Typography>
+              </Grid>
+              <Grid item xs={12} container justify="center" className={classes.grid}>
+                  <Typography>This section builds rules to handle whitelisting of some more Java features in the Project which may cause issues while obfuscation. Adding some Interfaces and Attributes. </Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
@@ -113,9 +121,45 @@ const ObfuscationTooltip = withStyles((theme) => ({
                     ref={register}
                     />
 
-                    <p>Add those Interfaces in format <i>"class in.bypass or name of interface"</i> in below Text Field (case sensitive).</p>
+                    <p>Add those Interfaces in format <i>"class in.bypass or name of interface"</i> in above Text Field (case sensitive) Press enter to enter more.</p>
                     <Typography>This is to make sure some interfaces, either required in application or libraries are skipped from renaming.</Typography>
                   </section>
+                  <section className={classes.section}>
+                    <Typography>Do you want to keep below{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Java Lang Attributes</Typography>
+                          {"Class files essentially define classes, their fields, and their methods. A lot of essential and non-essential data are attached to these classes, fields, and methods as attributes. For instance, attributes can contain bytecode, source file names, line number tables, etc. R8's obfuscation step removes attributes that are generally not necessary for executing the code."}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>attributes</Link>
+                    </ObfuscationTooltip>
+                    {" "}? Check all that apply</Typography>
+                    {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","*Annotation*","EnclosingMethod","Synthetic","MethodParameters"].map(name => (
+                      <Controller
+                        key={name}
+                        name={name}
+                        as={
+                          <FormControlLabel
+                            control={<Checkbox value={name} />}
+                            label={name}
+                          />
+                        }
+                        valueName={defaultValues.Attributes}
+                        type="checkbox"
+                        onChange={([e]) => {
+                            return e.target.checked ? e.target.value : "";
+                          }
+                        }
+                        control={control}
+                        ref={register}
+                      />
+                      ))}
+                      <p>You can select from above attributes which are being called in your project and they will be skipped from obfuscation. </p>
+                  </section>
+                  
                   <section className={classes.section}>
                     <Typography>Do you want to suppress{" "}
                     <ObfuscationTooltip
@@ -142,43 +186,9 @@ const ObfuscationTooltip = withStyles((theme) => ({
                         control={control}
                         ref={register}
                       />
-                    <Typography>R8 wouldm't print warnings about classes with matching names which are entered here. Ignoring warnings can be dangerous. <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#dontwarn">Read More on Proguard Documentation</a></Typography>
+                    <p>R8 wouldm't print warnings about classes with matching names which are entered here. Ignoring warnings can be dangerous. <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#dontwarn">Read More on Proguard Documentation</a></p>
                   </section>
-                  <section className={classes.action}>
-                    <label>Do you want to keep below{" "}
-                    <ObfuscationTooltip
-                      title={
-                        <React.Fragment>
-                          <Typography color="inherit">Java Lang Attributes</Typography>
-                          {"Class files essentially define classes, their fields, and their methods. A lot of essential and non-essential data are attached to these classes, fields, and methods as attributes. For instance, attributes can contain bytecode, source file names, line number tables, etc. R8's obfuscation step removes attributes that are generally not necessary for executing the code."}
-                        </React.Fragment>
-                      }
-                    >
-                      <Link>attributes</Link>
-                    </ObfuscationTooltip>
-                    {" "}? Check all that apply<br /></label>
-                    {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","*Annotation*","EnclosingMethod","Synthetic","MethodParameters"].map(name => (
-                      <Controller
-                        key={name}
-                        name={name}
-                        as={
-                          <FormControlLabel
-                            control={<Checkbox value={name} />}
-                            label={name}
-                          />
-                        }
-                        valueName={defaultValues.Attributes}
-                        type="checkbox"
-                        onChange={([e]) => {
-                            return e.target.checked ? e.target.value : "";
-                          }
-                        }
-                        control={control}
-                        ref={register}
-                      />
-                      ))}
-                      <Typography>You can select from above attributes which are being called in your project and they will be skipped from obfuscation. </Typography>
-                  </section>
+
                 </form>
               </Grid>
               <Grid item xs={6} sm={3} container justify="center" >

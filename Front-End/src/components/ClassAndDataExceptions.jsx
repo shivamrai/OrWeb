@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       '& > *': {
         margin: theme.spacing(2),
-        //height: theme.spacing(100),
       },
       '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -40,11 +39,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(2),
     },
     section: {
-      fontSize: 18, //for longer questions
-      margin: theme.spacing(1),
-      alignItems:"left",
-      alignContent:"left",
-      justifyContent: "flex-start",
+      //fontSize: 18, //for longer questions
+      margin: theme.spacing(2),
+
     },
     button: {
       margin: theme.spacing(1),
@@ -94,7 +91,7 @@ const ClassAndDataExceptions = () => {
               <Grid item xs={24} sm={12} alignContent="flex-start" justifyContent="flex-start">
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
-                    <label>Do you have any{" "}
+                    <Typography>Do you have any{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -105,7 +102,7 @@ const ClassAndDataExceptions = () => {
                     >
                       <Link>data</Link>
                     </ObfuscationTooltip>
-                    {" "}classes(classes requiring serialization from GSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</label>
+                    {" "}classes(classes requiring serialization from GSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</Typography>
                     <Controller
                       as={
                         <RadioGroup aria-label="gSONKeepRulesEnable">
@@ -129,7 +126,7 @@ const ClassAndDataExceptions = () => {
                   </section>
                   <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                     <section className={classes.section}>
-                      <label>Are you using data classes without{" "}
+                      <Typography>Are you using data classes without{" "}
                       <ObfuscationTooltip
                         title={
                           <React.Fragment>
@@ -141,8 +138,7 @@ const ClassAndDataExceptions = () => {
                         <Link>@SerializedName</Link>
                       </ObfuscationTooltip>
                       {" "}annotation?
-                      </label>
-                      <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
+                      </Typography>
                       <Controller as={
                         <ChipInput
                           aria-label="dataClassChipInput"
@@ -154,11 +150,12 @@ const ClassAndDataExceptions = () => {
                       control={control}
                       ref={register}
                       />
+                      <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
                       <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
                     </section>
                   </Grid>
                   <section className={classes.section}>
-                    <label>Do you want to keep specific class names from obfuscation{" "}
+                    <Typography>Do you want to keep specific class names from obfuscation{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -170,8 +167,7 @@ const ClassAndDataExceptions = () => {
                     >
                       <Link>libraries</Link>
                     </ObfuscationTooltip>
-                    {" "}in your project (like OkHttp3)?</label>
-                    <Typography>Add those classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
+                    {" "}in your project (like OkHttp3)?</Typography>
                     <Controller as={
                       <ChipInput
                         aria-label="libraryChipInput"
@@ -183,6 +179,7 @@ const ClassAndDataExceptions = () => {
                     control={control}
                     ref={register}
                     />
+                    <Typography>Add those classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                     <Typography>A resource is loaded with a relative path so the package of this class must be preserved.</Typography>
                     <Typography>Specify complete names so that correct packages can be targeted, eg for OkHttp3 <i>okhttp3.internal.publicsuffix.PublicSuffixDatabase </i><a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro">Read about the fix here.</a></Typography>
                     <Typography>E.g. for ProGuard considerations <i>com.path.to.your.EnumArg/ParcelableArg/SerializableArg </i><a href="https://developer.android.com/guide/navigation/navigation-pass-data#proguard_considerations">More about this issue</a></Typography>

@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
 
   root: {
     flexWrap: 'wrap',
-    display: "flex",
-    justifyContent: "center",
+    //display: "flex",
+    flexGrow: 1,
     listStyle: "none",
     padding: theme.spacing(0.5),
     '& > *': {
-     margin: theme.spacing(2),
-     height: theme.spacing(100),
+     margin: theme.spacing(5),
+     //height: theme.spacing(100),
     },
     '& .MuiTextField-root': {
         margin: theme.spacing(1),
@@ -36,12 +36,13 @@ const useStyles = makeStyles((theme) => ({
   },
   paper:{
     display: "flex",
+    flexGrow: 1,
     justifyContent: "center",
     flexWrap: "wrap",
     listStyle: "none",
     padding: theme.spacing(0.5),
     margin: 0,
-    height: theme.spacing(6),
+    //height: theme.spacing(6),
   },
   formControl: {
     margin: theme.spacing(3),
@@ -56,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
     height: theme.spacing(4),
+  },
+  button: {
+    margin: theme.spacing(1),
   },
 }));
 const defaultValues = {
@@ -110,7 +114,7 @@ export default function Result() {
         <Paper elevation={1}>
           <Grid container spacing={2}>
           <br />
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={24} sm={12} container justify="center">
                   <Typography variant="h5">Part 5 Genarated Configs</Typography>
               </Grid>
               <Grid item xs={24} sm={12}>
@@ -188,35 +192,39 @@ export default function Result() {
                     }}
                   />
               </Grid>
-              <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
+              <Grid item xs={12} container justify="center">
                 <Typography>Hover on Rule tags to check description of each rule.</Typography>
-                <Paper component="ul" className={classes.paper}>
-                  {chipsData.map((data) => {
-                    let icon;
-                    return (
-                      <li key={data.key}>
-                        <Tooltip title={data.label}>
-                          <Chip
-                            icon={icon}
-                            avatar={<Avatar>{data.key[1]}</Avatar>}
-                            label="Primary clickable"
-                            clickable
-                            color="primary"
-                            label={data.key}
-                            className={classes.chip}
-                          />
-                        </Tooltip>
-                      </li>
-                    );
-                  })}
-                </Paper>
+
               </Grid>
-              <Grid item xs={24} sm={12}>
+              <Grid item xs={12}>
+              <Paper component="ul" className={classes.paper}>
+                {chipsData.map((data) => {
+                  let icon;
+                  return (
+                    <li key={data.key}>
+                      <Tooltip title={data.label}>
+                        <Chip
+                          icon={icon}
+                          avatar={<Avatar>{data.key[1]}</Avatar>}
+                          label="Primary clickable"
+                          clickable
+                          color="primary"
+                          label={data.key}
+                          className={classes.chip}
+                        />
+                      </Tooltip>
+                    </li>
+                  );
+                })}
+              </Paper>
+              </Grid>
+              <Grid item xs={24} sm={12} className={classes.button}>
                   <Button
                     type="submit"
                     onClick={handleSubmit(onSubmit)}
                     variant="contained"
-                    color="secondary"
+                    color="primary"
+                    fullWidth
                   >Start Over</Button>
               </Grid>
           </Grid>

@@ -48,9 +48,11 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
-  grid: {
-    //alignItems: 'center',
-    //alignContent: 'center',
+
+  section: {
+    //fontSize: 18, //for longer questions
+    margin: theme.spacing(1),
+
   },
 }));
 const defaultValues = {
@@ -111,8 +113,8 @@ const BasicSetup = (props) => {
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
-                  <section>
-                    <label>Do you want to enable{" "}
+                  <section className={classes.section}>
+                    <Typography>Do you want to enable{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -122,7 +124,7 @@ const BasicSetup = (props) => {
                       }
                     >
                       <Link>Obfuscation</Link>
-                    </ObfuscationTooltip>{" "}?</label>
+                    </ObfuscationTooltip>{" "}?</Typography>
                     <Controller
                       as={
                         <RadioGroup aria-label="minifyEnabled">
@@ -143,7 +145,7 @@ const BasicSetup = (props) => {
                       ref={register}
                     />
                   </section>
-                  <section>
+                  <section className={classes.section}>
                     <Controller
                       as={
                         <FormControlLabel
@@ -168,9 +170,8 @@ const BasicSetup = (props) => {
                      </ObfuscationTooltip>
                     {" "}</label>
                   </section>
-
-                  <section>
-                    <label>Do you want to{" "}
+                  <section className={classes.section}>
+                    <Typography>Do you want to{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -181,7 +182,7 @@ const BasicSetup = (props) => {
                     >
                       <Link>Shrink</Link>
                     </ObfuscationTooltip>
-                     {" "}your output APKs?</label>
+                     {" "}your output APKs?</Typography>
                     <Controller
                       as={
                         <RadioGroup aria-label="shrinkResources">
@@ -202,8 +203,8 @@ const BasicSetup = (props) => {
                       ref={register}
                     />
                   </section>
-                  <section>
-                    <label>Do you want to enable{" "}
+                  <section className={classes.section}>
+                    <Typography>Do you want to enable{" "}
                     <ObfuscationTooltip
                       title={
                         <React.Fragment>
@@ -214,7 +215,7 @@ const BasicSetup = (props) => {
                     >
                       <Link>Optimization</Link>
                     </ObfuscationTooltip>
-                     {" "}?</label>
+                     {" "}?</Typography>
                     <Controller
                       as={
                         <RadioGroup aria-label="optimizationGradle">
@@ -247,8 +248,7 @@ const BasicSetup = (props) => {
                       </ObfuscationTooltip>
                     </Typography>
                   </section>
-
-                    <section>
+                    <section className={classes.section}>
                       <Controller
                         as={
                           <FormControlLabel
