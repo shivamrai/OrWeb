@@ -111,8 +111,10 @@ def processObfuscationFlags():
                 hints.append(warnDict)
         #interface keep rules
         InterfaceChipInput = input_json.get("InterfaceChipInput")
-        for className in InterfaceChipInput:
-            rulesPro+=keepRulesAdd(className,"interface")
+        if(InterfaceChipInput!=[]):
+            for className in InterfaceChipInput:
+                rulesPro+=keepRulesAdd(className,"interface")
+        
         if "keep" in rulesPro:
             keepDict = {}
             keepDict["key"]="-keep"
