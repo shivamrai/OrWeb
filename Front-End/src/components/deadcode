@@ -20,3 +20,7 @@
 //     ref = {register}
 //   />
 // </section>
+
+ssh -i orweb.pem ubuntu@ec2-3-16-114-178.us-east-2.compute.amazonaws.com
+sudo apt install gcc gcc-c++ make openssl-devel git
+curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash -

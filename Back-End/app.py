@@ -54,9 +54,9 @@ def processObfuscationFlags():
         MinifyEnabled=input_json.get("MinifyEnabled")
         if(MinifyEnabled=='yes'):
             gradleConfig+="minifyEnabled true \n"
-            hints.append({})
         if(input_json.get("ShrinkResources")=='yes'):
             gradleConfig+="shrinkResources true \n"
+
         OptimizationGradle=input_json.get("OptimizationGradle")
         if(OptimizationGradle=='yes'):
             gradleConfig+="proguardFiles getDefaultProguardFile(\'proguard-android-optimize.txt\'),\'proguard-rules.pro\' \n"
@@ -76,6 +76,10 @@ def processObfuscationFlags():
             hints.append(obfuscateDict)
         if(input_json.get("OverloadAggressively")=='yes' and MinifyEnabled == 'yes'):
             rulesPro+="-overloadaggressively\n"
+            aggressiveDict = {}
+            aggressiveDict["key"] = "-overloadaggressively"
+            aggressiveDict["label"] = definitions.get("-overloadaggressively")
+            hints.append(aggressiveDict)
         if(input_json.get("ShrinkResources")=='no' and OptimizationGradle=='yes'):
             rulesPro+="-dontshrink\n"
             hintDict = {}
@@ -85,6 +89,10 @@ def processObfuscationFlags():
         #keepRules
         if(input_json.get("GSONKeepRulesEnable")=='yes'):
             rulesPro+="-keepclassmembers,allowobfuscation class * { \n@com.google.gson.annotations.SerializedName <fields>;\n}\n"
+            gsonDict = {}
+            gsonDict["key"] = "-keepclassmembers"
+            gsonDict["label"] = definitions.get("-keepclassmembers")
+            hints.append(gsonDict)
         DataClassChipInput = input_json.get("DataClassChipInput")
         if(DataClassChipInput):
             for className in DataClassChipInput:
