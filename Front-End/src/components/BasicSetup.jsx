@@ -18,7 +18,6 @@ import Box from '@material-ui/core/Box';
 import { pink } from '@material-ui/core/colors';
 import Switch from '@material-ui/core/Switch';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     //display: 'flex',
@@ -48,7 +47,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
-
+  grid: {
+    margin: theme.spacing(2),
+  },
   section: {
     //fontSize: 18, //for longer questions
     margin: theme.spacing(1),
@@ -61,7 +62,6 @@ const defaultValues = {
   ShrinkResources:"no",
   OptimizationGradle:"no",
   OptimizationFullModeR8:"no",
-  AdvancedOverload: "no",
 };
 const ObfuscationTooltip = withStyles((theme) => ({
   tooltip: {
@@ -108,11 +108,15 @@ const BasicSetup = (props) => {
     <CssBaseline />
         <Paper elevation={1} >
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12} container justify="center">
+              <Grid item xs={12} container justify="center">
                   <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
+              </Grid>
+              <Grid item xs={12} className={classes.grid}>
+                  <Typography>This section deals about some basic choices that you can make regarding obfuscation and R8 features for your project. There are some additional experimental flags included to work.</Typography>
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
+
                   <section className={classes.section}>
                     <Typography>Do you want to enable{" "}
                     <ObfuscationTooltip
@@ -153,8 +157,8 @@ const BasicSetup = (props) => {
 
                           type="checkbox"
                         />}
-                      name="AdvancedOverload"
-                      value={false}
+                      name="OverloadAggressively"
+                      value={"no"}
                       control = {control}
                       ref = {register}
                      />
@@ -256,7 +260,7 @@ const BasicSetup = (props) => {
                             type="checkbox"
                           />}
                         name="OptimizationFullModeR8"
-                        value={false}
+                        value={"no"}
                         control = {control}
                         ref = {register}
                        />

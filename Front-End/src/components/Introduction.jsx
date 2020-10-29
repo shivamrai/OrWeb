@@ -74,15 +74,41 @@ export default function Introduction() {
 
           </Grid>
             <br />
-          <Grid item xs={24} container justify="center" class={classes.grid}>
+          <Grid item xs={12} container justify="center" class={classes.grid}>
 
           <Typography>
-            This is a multi step wizard to generate obfuscation rules compatiable with R8.
+            This is a multi step wizard to generate obfuscation rules compatiable with R8. Obfuscation provides a reverse engineering protection against your apks which can be either cause of intellectual property theft or malicious injection of applications
           </Typography>
-        <br />
+          <Typography>
+            Did you know that according to research only 20% applications on Google Play are obfuscated.
+          </Typography>
+          <Typography>
+            You would be working through a set of questions that will help us generating obfuscation rules for your project.
+          </Typography>
+          <Typography>
+            There are a few things you need to make note of which will act as hints for answering questions
+          </Typography>
           </Grid>
-
-          <Grid item xs={24} container justify="center">
+          <Grid item xs={12}>
+          <ul>
+            <li>
+            <Typography gutterBottom>
+            <b>Words highlighted with Link:</b> Hover over these links to understand the context of question.
+            </Typography>
+            </li>
+            <li>
+            <Typography gutterBottom>
+            <b>Issue links:</b> Important to understand a few questions and their importance. These are links to documentation provided by either guardsquare or Google.
+            </Typography>
+            </li>
+            <li>
+            <Typography gutterBottom>
+            <b>Switches:</b> All the switches provide some extra customizations like making configuration extra aggressive or enabling some options on generated rules.
+            </Typography>
+            </li>
+          </ul>
+          </Grid>
+          <Grid item xs={12} container justify="center">
             <Risks />
           </Grid>
 

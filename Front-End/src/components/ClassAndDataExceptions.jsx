@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
     },
+    chipInput:{
+      flexGrow:1,
+    },
+    grid: {
+      margin: theme.spacing(2),
+    },
 }));
 const defaultValues = {
   GSONKeepRulesEnable: "yes",
@@ -85,10 +91,13 @@ const ClassAndDataExceptions = () => {
     <CssBaseline />
         <Paper elevation={1}>
           <Grid container spacing={2}>
-              <Grid item xs={24} sm={12} container justify="center">
+              <Grid item xs={12} container justify="center">
                   <Typography variant="h5">Part 2 Data classes and JARs/AARs</Typography>
               </Grid>
-              <Grid item xs={24} sm={12} alignContent="flex-start" justifyContent="flex-start">
+              <Grid item xs={12} className={classes.grid}>
+                  <Typography>This section specifies the rules that help us keep some important exceptions from obfuscation as the applications may cause runtime issues due to obfuscation of these classes/libraries. There are some links added to get a guide on covered exceptions.</Typography>
+              </Grid>
+              <Grid item xs={12} >
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
                   <section className={classes.section}>
                     <Typography>Do you have any{" "}
@@ -172,17 +181,34 @@ const ClassAndDataExceptions = () => {
                       <ChipInput
                         aria-label="libraryChipInput"
                         control={<Chip />}
-                        label="Add Full names here."
+                        label="Add correct Class names."
                       />
                     }
                     name="LibraryChipInput"
                     control={control}
                     ref={register}
                     />
-                    <Typography>Add those classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
-                    <Typography>A resource is loaded with a relative path so the package of this class must be preserved.</Typography>
+                    <Typography>Add <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">External Libraries</Typography>
+                          {"A resource like a library is loaded with a relative path so the package of this class must be preserved from obfuscation to avoid errors."}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>these</Link>
+                    </ObfuscationTooltip> classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                     <Typography>Specify complete names so that correct packages can be targeted, eg for OkHttp3 <i>okhttp3.internal.publicsuffix.PublicSuffixDatabase </i><a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro">Read about the fix here.</a></Typography>
-                    <Typography>E.g. for ProGuard considerations <i>com.path.to.your.EnumArg/ParcelableArg/SerializableArg </i><a href="https://developer.android.com/guide/navigation/navigation-pass-data#proguard_considerations">More about this issue</a></Typography>
+                    <Typography>You can also add some classes of <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">ProGuard considerations</Typography>
+                          {"If you are shrinking your code, you need to prevent your Parcelable, Serializable, and Enum class names from being obfuscated as part of the minification process."}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>EnumArg/ParcelableArg/SerializableArg</Link>
+                    </ObfuscationTooltip> type for R8 considerations <i>com.path.to.your.EnumArg/ParcelableArg/SerializableArg </i><a href="https://developer.android.com/guide/navigation/navigation-pass-data#proguard_considerations">More about this issue</a></Typography>
                   </section>
               </form>
             </Grid>

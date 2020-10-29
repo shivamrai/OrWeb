@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const defaultValues = {
-  WarningChipInput: [],
+
   InterfaceChipInput:[],
 };
 const ObfuscationTooltip = withStyles((theme) => ({
@@ -159,35 +159,8 @@ const ObfuscationTooltip = withStyles((theme) => ({
                       ))}
                       <p>You can select from above attributes which are being called in your project and they will be skipped from obfuscation. </p>
                   </section>
-                  
-                  <section className={classes.section}>
-                    <Typography>Do you want to suppress{" "}
-                    <ObfuscationTooltip
-                      title={
-                        <React.Fragment>
-                          <Typography color="inherit">Warning Exceptions</Typography>
-                          {"Specify class/interface/enum for which no warning messages would be printed, these could be about unresolved references and other important problems.For warnings about missing third-party classes, the options -ignorewarnings or -dontwarn are probably fine. If the code already works in debug mode, it means that the listed missing classes are never used. You can then tell R8 to proceed processing the code anyway."}
-                        </React.Fragment>
-                      }
-                    >
-                      <Link>warnings</Link>
-                    </ObfuscationTooltip>
-                     {" "}for some classes/libraries/packages?</Typography>
-                      <Typography>Add those packages below in format <i>"com.devnn"</i> in below Text Field (case sensitive)</Typography>
-                      <Controller as={
-                        <ChipInput
-                          aria-label="warningChipInput"
-                          value={defaultValues}
-                          control={<Chip />}
-                          label="Add Library Packages here"
-                        />
-                        }
-                        name="WarningChipInput"
-                        control={control}
-                        ref={register}
-                      />
-                    <p>R8 wouldm't print warnings about classes with matching names which are entered here. Ignoring warnings can be dangerous. <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#dontwarn">Read More on Proguard Documentation</a></p>
-                  </section>
+
+
 
                 </form>
               </Grid>

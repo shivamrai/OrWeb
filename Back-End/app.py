@@ -94,12 +94,13 @@ def processObfuscationFlags():
             rulesPro+="-keepnames class "+(className)
         #suppress warnings for packages/classes/libraries
         WarningChipInput = input_json.get("WarningChipInput")
-        for className in WarningChipInput:
-            rulesPro+="-donotwarn "+className+".** \n"
-            warnDict = {}
-            warnDict["key"]="-dontwarn"
-            warnDict["label"] = definitions.get("-dontwarn")
-            hints.append(warnDict)
+        if(WarningChipInput!=[]):
+            for className in WarningChipInput:
+                rulesPro+="-donotwarn "+className+".** \n"
+                warnDict = {}
+                warnDict["key"]="-dontwarn"
+                warnDict["label"] = definitions.get("-dontwarn")
+                hints.append(warnDict)
         #interface keep rules
         InterfaceChipInput = input_json.get("InterfaceChipInput")
         for className in InterfaceChipInput:

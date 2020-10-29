@@ -12,13 +12,16 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import Select from './Select';
+import ChipInput from 'material-ui-chip-input';
+import Chip from "@material-ui/core/Chip";
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useForm, Controller } from "react-hook-form";
 import {Link,useHistory} from "react-router-dom";
 import {useStateMachine} from "little-state-machine";
 import updateAction from './updateAction';
-import axios from 'axios';
+import { pink } from '@material-ui/core/colors';
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +61,7 @@ const defaultValues = {
   ShrinkedClassesStats:"no",
   RemoveCommonWarnings:"no",
   WebviewRule:"no",
+  WarningChipInput: [],
 };
 
 const ObfuscationTooltip = withStyles((theme) => ({
@@ -69,6 +73,19 @@ const ObfuscationTooltip = withStyles((theme) => ({
     border: '1px solid #dadde9',
   },
 }))(Tooltip);
+const PurpleSwitch = withStyles({
+  switchBase: {
+    color: pink[300],
+    '&$checked': {
+      color: pink[500],
+    },
+    '&$checked + $track': {
+      backgroundColor: pink[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 const Diagnostics = (props) => {
   const classes = useStyles();
   const {state,action} = useStateMachine(updateAction);
@@ -98,106 +115,113 @@ const Diagnostics = (props) => {
                 <Typography variant="h5">Part 4 Print Diagnostics Setup</Typography>
             </Grid>
             <Grid item xs={12} container justify="center" className={classes.grid}>
-                <Typography>This section specifies the rules that enable tracing issues through stdout. You can later on add a filename in front of this rules generated on this page to output to a file.</Typography>
+                <Typography>This section specifies the rules that enable tracing issues through stdout. You can later on add a filename in front of this rules(printseeds, printconfiguration, printusage ) generated on this page to output to a file.</Typography>
             </Grid>
             <Grid item xs={12} alignContent="flex-start" alignItems='flex-start'>
               <form onSubmit={handleSubmit} class={classes.form}>
-                <section className={classes.section}>
-                  <Typography>Do you want information of classes{" "}
-                  <ObfuscationTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography color="inherit">List of whitelisted classes from R8</Typography>
-                        {"Outputs a list of the classes, methods, and fields which match the keep rules to the console."}
-                      </React.Fragment>
+              <section className={classes.section}>
+                <Typography>Do you want to suppress{" "}
+                <ObfuscationTooltip
+                  title={
+                    <React.Fragment>
+                      <Typography color="inherit">Warning Exceptions</Typography>
+                      {"Specify class/interface/enum for which no warning messages would be printed, these could be about unresolved references and other important problems.For warnings about missing third-party classes, the options -ignorewarnings or -dontwarn are probably fine. If the code already works in debug mode, it means that the listed missing classes are never used. You can then tell R8 to proceed processing the code anyway."}
+                    </React.Fragment>
+                  }
+                >
+                  <Link>warnings</Link>
+                </ObfuscationTooltip>
+                 {" "}for some classes/libraries/packages?</Typography>
+                  <Typography>Add those packages below in format <i>"com.devnn"</i> in below Text Field (case sensitive)</Typography>
+                  <Controller as={
+                    <ChipInput
+                      aria-label="warningChipInput"
+                      value={defaultValues}
+                      control={<Chip />}
+                      label="Add Library Packages here"
+                    />
                     }
-                  >
-                    <Link>skipped</Link>
-                  </ObfuscationTooltip>{" "}during obfuscation?</Typography>
-                  <Controller
-                    as={
-                      <RadioGroup aria-label="printseedsStats">
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="Yes"
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="No"
-                        />
-                      </RadioGroup>
-                    }
-                    name="PrintseedsStats"
+                    name="WarningChipInput"
                     control={control}
-                    ref = {register}
+                    ref={register}
                   />
-                </section>
-                <section className={classes.section}>
-                  <Typography>Do you want to view the final set of{" "}
-                  <ObfuscationTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography color="inherit">All rules applied by R8</Typography>
-                        {"Outputs the used configuration rules to the console."}
-                      </React.Fragment>
-                    }
-                  >
-                    <Link>rules</Link>
-                  </ObfuscationTooltip>{" "}generated by R8 after build?</Typography>
-                  <Controller
-                    as={
-                      <RadioGroup aria-label="r8OutputCFG">
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="Yes"
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="No"
-                        />
-                      </RadioGroup>
-                    }
-                    name="R8OutputCFG"
-                    control={control}
-                    ref = {register}
-                  />
-                </section>
-                <section className={classes.section}>
-                  <Typography>Do you want to view classes which were{" "}
-                  <ObfuscationTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography color="inherit">Removed Code</Typography>
-                        {"Outputs a list of the classes, methods, and fields which were removed during shrinking to the console."}
-                      </React.Fragment>
-                    }
-                  >
-                    <Link>removed</Link>
-                  </ObfuscationTooltip>{" "}during shrinking?</Typography>
-                  <Controller
-                    as={
-                      <RadioGroup aria-label="shrinkedClassesStats">
-                        <FormControlLabel
-                          value="yes"
-                          control={<Radio />}
-                          label="Yes"
-                        />
-                        <FormControlLabel
-                          value="no"
-                          control={<Radio />}
-                          label="No"
-                        />
-                      </RadioGroup>
-                    }
-                    name="ShrinkedClassesStats"
-                    control={control}
-                    ref = {register}
-                  />
-                </section>
+                <p>R8 wouldm't print warnings about classes with matching names which are entered here. Ignoring warnings can be dangerous. <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#dontwarn">Read More on Proguard Documentation</a></p>
+              </section>
+              <section className={classes.section}>
+                <Controller
+                  as={
+                    <FormControlLabel
+                      control={<PurpleSwitch value="yes"/>}
+
+                      type="checkbox"
+                    />}
+                  name="PrintseedsStats"
+                  value={"no"}
+                  control = {control}
+                  ref = {register}
+                 />
+                 <label>Enable display of all classes{" "}
+                 <ObfuscationTooltip
+                   title={
+                     <React.Fragment>
+                       <Typography color="inherit">List of whitelisted classes from R8</Typography>
+                       {"Outputs a list of the classes, methods, and fields which match the keep rules to the console."}
+                     </React.Fragment>
+                   }
+                 >
+                   <Link>skipped</Link>
+                 </ObfuscationTooltip>{" "}during obfuscation.</label>
+              </section>
+              <section className={classes.section}>
+                <Controller
+                  as={
+                    <FormControlLabel
+                      control={<PurpleSwitch value="yes"/>}
+
+                      type="checkbox"
+                    />}
+                  name="R8OutputCFG"
+                  value={"no"}
+                  control = {control}
+                  ref = {register}
+                 />
+                 <label>Enable display of the final set of{" "}
+                 <ObfuscationTooltip
+                   title={
+                     <React.Fragment>
+                       <Typography color="inherit">All rules applied by R8</Typography>
+                       {"Outputs the used configuration rules to the console."}
+                     </React.Fragment>
+                   }
+                 >
+                   <Link>rules</Link>
+                 </ObfuscationTooltip>{" "}generated by R8 after build</label>
+              </section>
+              <section className={classes.section}>
+                <Controller
+                  as={
+                    <FormControlLabel
+                      control={<PurpleSwitch value="yes"/>}
+
+                      type="checkbox"
+                    />}
+                  name="ShrinkedClassesStats"
+                  value={"no"}
+                  control = {control}
+                  ref = {register}
+                 />
+                 <label>Enable display of classes which were{" "}
+                 <ObfuscationTooltip
+                   title={
+                     <React.Fragment>
+                       <Typography color="inherit">Removed Code</Typography>
+                       {"Outputs a list of the classes, methods, and fields which were removed during shrinking to the console."}
+                     </React.Fragment>
+                   }
+                 >
+                   <Link>removed</Link>
+                 </ObfuscationTooltip>{" "}during shrinking on console.</label>
+              </section>
               </form>
             </Grid>
             <Grid item xs={6} sm={3} container justify="center" >
