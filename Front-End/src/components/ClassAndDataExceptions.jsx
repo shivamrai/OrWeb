@@ -52,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
     grid: {
       margin: theme.spacing(2),
     },
+    paper: {
+      maxHeight: 600, 
+      overflow: 'auto',
+    },
 }));
 const defaultValues = {
   GSONKeepRulesEnable: "yes",
@@ -89,7 +93,7 @@ const ClassAndDataExceptions = () => {
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
-        <Paper elevation={1}>
+        <Paper elevation={1} className={classes.paper}>
           <Grid container spacing={2}>
               <Grid item xs={12} container justify="center">
                   <Typography variant="h5">Part 2 Data classes and JARs/AARs</Typography>

@@ -10,7 +10,7 @@ import { orange } from '@material-ui/core/colors';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.secondary,
+    backgroundColor: theme.palette.primary,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -22,7 +22,7 @@ export default function MainAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar color="inherit">
+      <AppBar color="inherit" position="static">
         <Toolbar variant="dense">
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />

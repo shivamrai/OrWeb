@@ -53,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
   section: {
     //fontSize: 18, //for longer questions
     margin: theme.spacing(1),
-
+  },
+  paper: {
+    maxHeight: 600, 
+    overflow: 'auto',
   },
 }));
 const defaultValues = {
@@ -106,7 +109,7 @@ const BasicSetup = (props) => {
   return (
     <Container component="main" maxWidth="md" fixed={true}>
     <CssBaseline />
-        <Paper elevation={1} >
+        <Paper elevation={1} className={classes.paper}>
           <Grid container spacing={2}>
               <Grid item xs={12} container justify="center">
                   <Typography variant="h5">Part 1 Obfuscation, Shrinking and Optimization Setup</Typography>
