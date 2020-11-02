@@ -168,20 +168,24 @@ def processObfuscationFlags():
             hints.append(attributeDict)
         print(rulesPro)
         #Diagnostics
-        diagnosticsDict = {}
         if(input_json.get("PrintseedsStats")=='yes'):
             rulesPro+="-printseeds\n"
-            diagnosticsDict["key"] = "-printseeds"
-            diagnosticsDict["label"] = definitions.get("-printseeds")
+            seedsDict = {}
+            seedsDict["key"] = "-printseeds"
+            seedsDict["label"] = definitions.get("-printseeds")
+            hints.append(seedsDict)
         if(input_json.get("R8OutputCFG")=='yes'):
             rulesPro+="-printconfiguration \n"
-            diagnosticsDict["key"] = "-printconfiguration"
-            diagnosticsDict["label"] = definitions.get("-printconfiguration")
+            configDict = {}
+            configDict["key"] = "-printconfiguration"
+            configDict["label"] = definitions.get("-printconfiguration")
+            hints.append(configDict)
         if(input_json.get("ShrinkedClassesStats")=='yes'):
             rulesPro+="-printusage \n"
-            diagnosticsDict["key"] = "-printusage"
-            diagnosticsDict["label"] = definitions.get("-printusage")
-        hints.append(diagnosticsDict)
+            usageDict = {}
+            usageDict["key"] = "-printusage"
+            usageDict["label"] = definitions.get("-printusage")
+            hints.append(usageDict)
         hints.pop(0)
         output["rulesPro"]= rulesPro
         output["gradleConfig"] = gradleConfig
