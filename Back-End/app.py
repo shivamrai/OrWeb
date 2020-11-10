@@ -38,6 +38,11 @@ def hello():
     return 'Hello, World!'
 
 # return app
+# an api to test data classes
+@app.route('/randomdata',methods = ['GET'])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def sendEmpData():
+    return {"age": 30,"fname": "John","mail": "hogan@gmail.com"}
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
