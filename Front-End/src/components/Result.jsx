@@ -86,6 +86,7 @@ export default function Result() {
   const fetchData = () =>{
     //console.log(data);
     axios.post('http://18.221.156.6:5000/submit_form',reqData)
+    //axios.post('http://localhost:5000/submit_form',reqData)
     .then(async (response)=>{
         //await setResData(response.data)
         console.log(response.data)

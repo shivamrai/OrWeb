@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const defaultValues = {
-
+  EnumRule: "no",
   InterfaceChipInput:[],
 };
 const ObfuscationTooltip = withStyles((theme) => ({
@@ -96,6 +96,40 @@ const ObfuscationTooltip = withStyles((theme) => ({
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
+                <section className={classes.section}>
+                    <Typography>Do you have any{" "}
+                    <ObfuscationTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography color="inherit">Enum</Typography>
+                          {"When accessing enum constants through reflection, we have to make sure that fields are kept during minification."}
+                        </React.Fragment>
+                      }
+                    >
+                      <Link>enums</Link>
+                    </ObfuscationTooltip>
+                    {" "}in your code (enum retrieval via reflection has to be kept from obfuscation?</Typography>
+                    <Controller
+                      as={
+                        <RadioGroup aria-label="enumRule">
+                          <FormControlLabel
+                            value="yes"
+                            control={<Radio />}
+                            label="Yes"
+                          />
+                          <FormControlLabel
+                            value="no"
+                            control={<Radio />}
+                            label="No"
+                          />
+                        </RadioGroup>
+                      }
+                      name="EnumRule"
+                      control={control}
+                      ref={register}
+                    />
+                    <Typography>Known issues with enum <a href="https://github.com/square/moshi/issues/689">here</a> </Typography>
+                  </section>
                   <section className={classes.section}>
                   <Typography>Do you want to keep some{" "}
                   <ObfuscationTooltip
@@ -159,9 +193,6 @@ const ObfuscationTooltip = withStyles((theme) => ({
                       ))}
                       <p>You can select from above attributes which are being called in your project and they will be skipped from obfuscation. </p>
                   </section>
-
-
-
                 </form>
               </Grid>
               <Grid item xs={6} sm={3} container justify="center" >

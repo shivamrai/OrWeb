@@ -5,7 +5,7 @@ import './App.css';
 import Hightlight from './components/highlighttTooltip';
 import TextEditor from './components/textEditor';
 import Risks from './components/Risks';
-import { DevTool } from "little-state-machine-devtools";
+import { DevTool } from "little-state-machine-devtools"; //enable for state checking
 import {StateMachineProvider,createStore} from "little-state-machine";
 import Introduction from './components/Introduction';
 import MainAppBar  from './components/MainAppBar';
@@ -29,15 +29,16 @@ createStore({
     R8OutputCFG: "",
     ShrinkedClassesStats:"",
     WebviewRule:"",
+    EnumRule:"",
   }
 });
 function App() {
   return (
     <div className="App">
       <MainAppBar />
+      <DevTool />
       <header className="App-header">
         <StateMachineProvider>
-        <DevTool />
           <div className="container">
             <Router>
               <MultiStepForm />
