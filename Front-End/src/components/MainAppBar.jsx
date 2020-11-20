@@ -28,7 +28,7 @@ export default function MainAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit">
-            OrWeb
+            WebObfuscator
           </Typography>
         </Toolbar>
       </AppBar>
