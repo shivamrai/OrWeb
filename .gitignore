@@ -24,3 +24,5 @@ yarn-error.log*
 
 /Front-End/node_modules
 /Front-End/src/components/deadcode
+
+/My-First-Key-Pair.pem
