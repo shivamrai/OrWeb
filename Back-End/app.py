@@ -38,11 +38,6 @@ def hello():
     return 'Hello, World!'
 
 # return app
-# an api to test data classes
-@app.route('/randomdata',methods = ['GET'])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
-def sendEmpData():
-    return {"age": 30,"fname": "John","mail": "hogan@gmail.com"}
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
@@ -101,10 +96,10 @@ def processObfuscationFlags():
         DataClassChipInput = input_json.get("DataClassChipInput")
         if(DataClassChipInput):
             for className in DataClassChipInput:
-                rulesPro+=keepDataClassAdd(className)
+                rulesPro+=keepRulesAdd(className,"class")
         LibraryChipInput = input_json.get("LibraryChipInput")
         for className in LibraryChipInput:
-            rulesPro+="-keepnames class "+(className) +"\n"
+            rulesPro+="-keepnames class "+(className)
         #suppress warnings for packages/classes/libraries
         WarningChipInput = input_json.get("WarningChipInput")
         if(WarningChipInput!=[]):
@@ -119,7 +114,7 @@ def processObfuscationFlags():
         if(InterfaceChipInput!=[]):
             for className in InterfaceChipInput:
                 rulesPro+=keepRulesAdd(className,"interface")
-        
+
         if "keep" in rulesPro:
             keepDict = {}
             keepDict["key"]="-keep"
@@ -128,9 +123,6 @@ def processObfuscationFlags():
         #javascript webview issue rule
         if(input_json.get("WebviewRule")=='yes'):
             rulesPro+="-keepclassmembers class fqcn.of.javascript.interface.for.webview { \npublic *;\n}"
-        #accessing enums with reflection issue
-        if(input_json.get("EnumRule")=='yes'):
-            rulesPro+="-keepclassmembers enum * { *; } \n"
         if "keepclassmembers" in rulesPro:
             keepClassMembersDict = {}
             keepClassMembersDict["key"]="-keepclassmembers"
@@ -176,24 +168,20 @@ def processObfuscationFlags():
             hints.append(attributeDict)
         print(rulesPro)
         #Diagnostics
+        diagnosticsDict = {}
         if(input_json.get("PrintseedsStats")=='yes'):
             rulesPro+="-printseeds\n"
-            seedsDict = {}
-            seedsDict["key"] = "-printseeds"
-            seedsDict["label"] = definitions.get("-printseeds")
-            hints.append(seedsDict)
+            diagnosticsDict["key"] = "-printseeds"
+            diagnosticsDict["label"] = definitions.get("-printseeds")
         if(input_json.get("R8OutputCFG")=='yes'):
             rulesPro+="-printconfiguration \n"
-            configDict = {}
-            configDict["key"] = "-printconfiguration"
-            configDict["label"] = definitions.get("-printconfiguration")
-            hints.append(configDict)
+            diagnosticsDict["key"] = "-printconfiguration"
+            diagnosticsDict["label"] = definitions.get("-printconfiguration")
         if(input_json.get("ShrinkedClassesStats")=='yes'):
             rulesPro+="-printusage \n"
-            usageDict = {}
-            usageDict["key"] = "-printusage"
-            usageDict["label"] = definitions.get("-printusage")
-            hints.append(usageDict)
+            diagnosticsDict["key"] = "-printusage"
+            diagnosticsDict["label"] = definitions.get("-printusage")
+        hints.append(diagnosticsDict)
         hints.pop(0)
         output["rulesPro"]= rulesPro
         output["gradleConfig"] = gradleConfig
@@ -205,8 +193,11 @@ def processObfuscationFlags():
 def keepRulesAdd(className,type):
     return "-keep "+ type + " " +className+".** { *; } \n"
 
-def keepDataClassAdd(className):
-    return "-keepclassmembers class com.example.test4.TestB {\n!transient <fields>;\n}\n"
+#autofilldata
+@app.route('/populate_form', methods=["GET","POST"])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def processPreFilledDataFromPRO():
+    return "success"
 
 definitions =  {
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",
@@ -226,6 +217,7 @@ definitions =  {
     "-keepclassmembers":"Exclude matching members in matching classes from shrinking, optimization, and renaming.",
     "-printseeds":"Outputs a list of the classes, methods, and fields which match the keep rules to the specified file, or to stdout if there is no file specified. "
     }
+
 class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
