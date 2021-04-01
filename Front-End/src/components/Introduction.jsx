@@ -10,6 +10,9 @@ import {Link,useHistory} from "react-router-dom";
 import {useStateMachine} from "little-state-machine";
 import updateAction from './updateAction';
 import {Grid,Button, Typography} from '@material-ui/core';
+import FileUpload from './FileUpload';
+import axios from 'axios';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,11 +48,47 @@ const defaultValues = {
 };
 export default function Introduction() {
   const classes = useStyles();
-  const [words,setWords] = React.useState([ "-ignorewarnings","-dontobfuscate","-forceprocessing","-dontpreverify", "-allowaccessmodification","-useuniqueclassmembernames","-overloadaggressively","-keepparameternames"]);
+//  const [words,setWords] = React.useState([ "-ignorewarnings","-dontobfuscate","-forceprocessing","-dontpreverify", "-allowaccessmodification","-useuniqueclassmembernames","-overloadaggressively","-keepparameternames"]);
   const [value, setValue] = React.useState('Controlled');
+  const [file, setFile] = React.useState(null);
+  const [fileName, setFileName] = React.useState('');
   const history = useHistory();
   const {state,action} = useStateMachine(updateAction);
-  console.log(JSON.stringify(words));
+  //file upload function
+   async function submitForm(contentType, data, setResponse) {
+       //loader on
+       //setLoading(true);
+       //setSuccess(false);
+       console.log(data);
+       await axios({
+           url: `localhost:5000/upload`,
+           method: 'POST',
+           data: data.file,
+           headers: {
+               'Content-Type': contentType
+           }
+       }).then((response) => {
+           setResponse(response.data)
+           setFile(response.data);
+           //loader off
+           // setLoading(false);
+           // setSuccess(true);
+           //SetNavigateNext(false);
+           //setBtnText("Configuration Ready!");
+           console.log("success");
+           alert('success');
+       }).catch((error) => {
+           setResponse("error");
+       })
+   }
+   function uploadWithFormData() {
+      const formData = new FormData();
+      formData.append("myFile", file);
+      //console.log(file);
+      setFileName(file);
+      submitForm("multipart/form-data", formData, (msg) => alert("Upload Successful" + msg));
+  }
+  //console.log(JSON.stringify(words));
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
@@ -57,9 +96,13 @@ export default function Introduction() {
     setValue(event.target.value);
   };
   const onSubmit = data => {
+    console.log(data);
     action(data);
     history.push("/basicSetup");
   };
+  const getDatafromFile = (data) => {
+
+  }
   return (
     <Container component="main" maxWidth="md" fixed={true} >
       <CssBaseline />
@@ -107,6 +150,17 @@ export default function Introduction() {
             </Typography>
             </li>
           </ul>
+          </Grid>
+          <Grid item xs={12} container>
+          <Grid item container class={classes.grid}>
+            <Typography>If you already have a configuration, upload to continue</Typography>
+          </Grid>
+            <Grid item container class={classes.grid}>
+            <form>
+              <input className={classes.root} type="file" name="file" onChange={(e) => setFile(e.target.files[0])}/>
+              <Button  onClick={uploadWithFormData} >Submit</Button>
+            </form>
+            </Grid>
           </Grid>
           <Grid item xs={12} container justify="center">
             <Risks />

@@ -1,7 +1,13 @@
-from flask import Flask
+from flask import Flask, flash, request, redirect, url_for
 from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
 from flask import request
+from werkzeug.utils import secure_filename
+
+UPLOADS = '/uploads'
+ALLOWED_EXTENSIONS = {'txt','pro'}
+
+
 
 import os
 import json
@@ -11,7 +17,7 @@ app = Flask(__name__, instance_relative_config=True)
 api = Api(app)
 cors = CORS(app, resources={r"/hello": {"origins": "http://localhost:port"}})
 test_config = None
-
+app.config['UPLOAD_FOLDER'] = UPLOADS
 
 app.config.from_mapping(
     SECRET_KEY='dev',
@@ -38,6 +44,41 @@ def hello():
     return 'Hello, World!'
 
 # return app
+
+#autofilldata
+@app.route('/populate_form', methods=["POST"])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def processPreFilledDataFromPRO():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        print(request.files)
+        if 'file' not in request.files:
+            flash('No file part')
+            return "invalid file/upload"
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return "no file uploaded"
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOADS'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+    return "upload again"
+
+#upload route
+@app.route('/upload',methods=["GET","POST"])
+def uploadConf():
+    if request.method == "POST":
+        print("Posted file: {}".format(request.files['file']))
+        textFile = request.files["file"]
+        print(textFile)
+
+        contents = textFile.read()
+        print(contents)
+        return "Successful"
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
@@ -193,11 +234,11 @@ def processObfuscationFlags():
 def keepRulesAdd(className,type):
     return "-keep "+ type + " " +className+".** { *; } \n"
 
-#autofilldata
-@app.route('/populate_form', methods=["GET","POST"])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
-def processPreFilledDataFromPRO():
-    return "success"
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 definitions =  {
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",

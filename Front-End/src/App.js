@@ -32,7 +32,7 @@ createStore({
     EnumRule:"",
   }
 });
-function App() {
+export default function App() {
   return (
     <div className="App">
       <MainAppBar />
@@ -49,5 +49,3 @@ function App() {
   </div>
   );
 }
-
-export default App;
