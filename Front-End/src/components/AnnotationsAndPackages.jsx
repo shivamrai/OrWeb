@@ -75,6 +75,7 @@ const ObfuscationTooltip = withStyles((theme) => ({
   const {state,action} = useStateMachine(updateAction);
   const history = useHistory();
   const onSubmit = data => {
+    console.log(data);
     action(data);
     history.push("/diagnostics");
   };

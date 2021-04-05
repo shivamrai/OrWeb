@@ -69,7 +69,7 @@ def processPreFilledDataFromPRO():
     return "upload again"
 
 #upload route
-@app.route('/upload',methods=["GET","POST"])
+@app.route('/upload',methods=["POST"])
 def uploadConf():
     if request.method == "POST":
         print("Posted file: {}".format(request.files['file']))
@@ -77,8 +77,23 @@ def uploadConf():
         print(textFile)
 
         contents = textFile.read()
+        contents = contents.decode("utf-8")
+
         print(contents)
-        return "Successful"
+
+        fileArr = contents.split('-')[1:]
+
+        modFileArr = []
+
+        for each in fileArr:
+            modFileArr.append(each[:-1])
+        print(modFileArr)
+
+        dictSetup = buildPreConfig(modFileArr)
+        print(dictSetup)
+        jsonDictSetup = json.dumps(dictSetup)
+        #print(jsonDictSetup)
+        return jsonDictSetup
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
@@ -238,9 +253,72 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def buildPreConfig(fileArr):
+    #json object for final pass to frontend.
+    ansDictSetup = { "MinifyEnabled": "",
+    "OverloadAggressively": "",
+    "ShrinkResources":"",
+    "OptimizationGradle":"",
+    "OptimizationFullModeR8":"",
+    "GSONKeepRulesEnable": "",
+    "Attributes":[],
+    "LibraryChipInput": [],
+    "DataClassChipInput": [],
+    "InterfaceChipInput":[],
+    "WarningChipInput": [],
+    "PrintseedsStats": "",
+    "R8OutputCFG": "",
+    "ShrinkedClassesStats":"",
+    "WebviewRule":"",
+    "EnumRule":""
+    }
+    #All existing rule check and add to UI
+
+    for elem in fileArr:
+        elem = elem.strip()
+        if(elem.find("allowaccessmodification")>0):
+            ansDictSetup["OptimizationFullModeR8"] = "Yes"
+        elif(elem == "overloadaggressively"):
+            ansDictSetup["OverloadAggressively"] ="Yes"
+        elif(elem == "printseeds"):
+            ansDictSetup["PrintseedsStats"] = "Yes"
+        elif(elem == "printconfiguration"):
+            ansDictSetup["R8OutputCFG"] = "Yes"
+        elif(elem == "printusage"):
+            ansDictSetup["ShrinkedClassesStats"] = "Yes"
+        elif(elem.find("enum")!=-1):
+            ansDictSetup["EnumRule"] = "Yes"
+        elif(elem.find("keepclassmembers,allowobfuscation")!=-1):
+            ansDictSetup["GSONKeepRulesEnable"] = "Yes"
+        elif(elem.find("fqcn")!=-1):
+            ansDictSetup["WebviewRule"] = "Yes"
+        elif(elem.find("keepclassmembers class")!=-1):
+            result = [x.strip() for x in elem.split(" ")][2]
+            ansDictSetup["DataClassChipInput"].append(result)
+        elif(elem.find("keep interface")!=-1):
+            result = [x.strip() for x in elem.split(" ")][2][:-4]
+            ansDictSetup["InterfaceChipInput"].append(result)
+        elif(elem.find("keepnames")!=-1):
+            result = [x.strip() for x in elem.split(" ")][2]
+            ansDictSetup["LibraryChipInput"].append(result)
+        elif(elem.find("donotwarn")!=-1):
+            result = [x.strip() for x in elem.split(" ")][1][:-3]
+            ansDictSetup["WarningChipInput"].append(result)
+        #elif(elem.find(""))
+
+
+        elif(elem[:14]=="keepattributes"):
+            result = [x.strip() for x in elem[15:].split(",")]
+
+            for each in result:
+                ansDictSetup[each] = each
+
+
+    return ansDictSetup
 
 
 definitions =  {
+    "-allowaccessmodification":"Allows R8 to change access modifiers, enabling additional optimizations and additional reorganizations to packages in which classes are contained.",
     "-keep": "Exclude matching classes, and matching members if specified, from shrinking, optimization, and renaming. Shrinking exclusion on the class means that members will not be removed but does not prevent members from being renamed. Specifying members will prevent them from being renamed if present.",
     "-dontobfuscate	": "Do not apply renaming, regardless of other configuration.",
     "-dontoptimize": "Do not optimize the code, regardless of other configuration. This is part of the default configuration.",

@@ -55,30 +55,39 @@ export default function Introduction() {
   const history = useHistory();
   const {state,action} = useStateMachine(updateAction);
   //file upload function
-   async function submitForm(contentType, data, setResponse) {
+   async function submitForm() {
        //loader on
        //setLoading(true);
-       //setSuccess(false);
-       console.log(data);
-       await axios({
+       //setSuccess(false);\
+       const formData = new FormData();
+
+      // Update the formData object
+      formData.append(
+        "myFile",
+        file,
+        file.name
+      );
+
+       console.log(formData);
+       await axios.post({
            url: `localhost:5000/upload`,
-           method: 'POST',
-           data: data.file,
+           data:formData ,
            headers: {
-               'Content-Type': contentType
+               'Content-Type': 'application/x-www-form-urlencoded'
            }
        }).then((response) => {
-           setResponse(response.data)
-           setFile(response.data);
+           // setResponse(response.data)
+           // setFile(response.data);
            //loader off
            // setLoading(false);
            // setSuccess(true);
            //SetNavigateNext(false);
            //setBtnText("Configuration Ready!");
+           console.log(response.data);
            console.log("success");
            alert('success');
        }).catch((error) => {
-           setResponse("error");
+           // setResponse("error");
        })
    }
    function uploadWithFormData() {
@@ -156,9 +165,20 @@ export default function Introduction() {
             <Typography>If you already have a configuration, upload to continue</Typography>
           </Grid>
             <Grid item container class={classes.grid}>
-            <form>
-              <input className={classes.root} type="file" name="file" onChange={(e) => setFile(e.target.files[0])}/>
-              <Button  onClick={uploadWithFormData} >Submit</Button>
+              <form onSubmit={
+                (state) =>
+                {
+                  state.preventDefault()
+                  // console.log(state)
+                  // console.log(file)
+                  submitForm()
+                }}>
+              <input className={classes.root} type="file" name="file" onChange={(e) => {
+                setFile(e.target.files[0])
+                console.log(e)
+                console.log(e.target.files[0])
+              }}/>
+              <Button  type="submit"> Submit</Button>
             </form>
             </Grid>
           </Grid>

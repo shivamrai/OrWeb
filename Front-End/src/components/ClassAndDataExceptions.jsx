@@ -53,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
     paper: {
-      maxHeight: 600, 
+      maxHeight: 600,
       overflow: 'auto',
     },
 }));
 const defaultValues = {
   GSONKeepRulesEnable: "yes",
-  LibraryChipInput: [],
-  DataClassChipInput: [],
+  LibraryChipInput: ["Tes3","Tes4"],
+  DataClassChipInput: ["Tes1","Tes2"],
 };
 
 const ObfuscationTooltip = withStyles((theme) => ({
