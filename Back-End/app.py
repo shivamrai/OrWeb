@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
 from flask import request
@@ -18,6 +18,8 @@ api = Api(app)
 cors = CORS(app, resources={r"/hello": {"origins": "http://localhost:port"}})
 test_config = None
 app.config['UPLOAD_FOLDER'] = UPLOADS
+app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.config.from_mapping(
     SECRET_KEY='dev',
@@ -69,31 +71,28 @@ def processPreFilledDataFromPRO():
     return "upload again"
 
 #upload route
-@app.route('/upload',methods=["POST"])
+@app.route('/upload',methods=["GET","POST"])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def uploadConf():
     if request.method == "POST":
         print("Posted file: {}".format(request.files['file']))
         textFile = request.files["file"]
         print(textFile)
-
         contents = textFile.read()
         contents = contents.decode("utf-8")
-
         print(contents)
-
         fileArr = contents.split('-')[1:]
-
         modFileArr = []
-
         for each in fileArr:
             modFileArr.append(each[:-1])
         print(modFileArr)
-
         dictSetup = buildPreConfig(modFileArr)
         print(dictSetup)
         jsonDictSetup = json.dumps(dictSetup)
         #print(jsonDictSetup)
-        return jsonDictSetup
+        #response = Flask.Response(jsonDictSetup)
+        #response.headers['Access-Control-Allow-Origin'] = '*'
+        return jsonify(dictSetup)
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
