@@ -15,11 +15,13 @@ import ast
 
 app = Flask(__name__, instance_relative_config=True)
 api = Api(app)
-cors = CORS(app, resources={r"/hello": {"origins": "http://localhost:port"}})
+#cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:port"}})
+#CORS(app, support_credentials=True)
 test_config = None
 app.config['UPLOAD_FOLDER'] = UPLOADS
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
-app.config['CORS_HEADERS'] = 'Content-Type'
+#app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.config.from_mapping(
     SECRET_KEY='dev',
@@ -72,10 +74,13 @@ def processPreFilledDataFromPRO():
 
 #upload route
 @app.route('/upload',methods=["GET","POST"])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='localhost',headers=['Content- Type','multipart/form-data'])
 def uploadConf():
+    print("hit")
     if request.method == "POST":
-        print("Posted file: {}".format(request.files['file']))
+        print("post hit")
+        #print("Posted file: {}".format(request.files['file']))
+        print(request.files)
         textFile = request.files["file"]
         print(textFile)
         contents = textFile.read()
@@ -88,11 +93,12 @@ def uploadConf():
         print(modFileArr)
         dictSetup = buildPreConfig(modFileArr)
         print(dictSetup)
-        jsonDictSetup = json.dumps(dictSetup)
+
+        jsonDictSetup = {"setupDetails":{dictSetup}}
         #print(jsonDictSetup)
         #response = Flask.Response(jsonDictSetup)
         #response.headers['Access-Control-Allow-Origin'] = '*'
-        return jsonify(dictSetup)
+        return jsonify(jsonDictSetup)
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
@@ -255,7 +261,7 @@ def allowed_file(filename):
 def buildPreConfig(fileArr):
     #json object for final pass to frontend.
     ansDictSetup = { "MinifyEnabled": "",
-    "OverloadAggressively": "",
+    "OverloadAggressively":"",
     "ShrinkResources":"",
     "OptimizationGradle":"",
     "OptimizationFullModeR8":"",
@@ -271,6 +277,7 @@ def buildPreConfig(fileArr):
     "WebviewRule":"",
     "EnumRule":""
     }
+
     #All existing rule check and add to UI
 
     for elem in fileArr:

@@ -50,34 +50,26 @@ export default function Introduction() {
   const classes = useStyles();
 //  const [words,setWords] = React.useState([ "-ignorewarnings","-dontobfuscate","-forceprocessing","-dontpreverify", "-allowaccessmodification","-useuniqueclassmembernames","-overloadaggressively","-keepparameternames"]);
   const [value, setValue] = React.useState('Controlled');
-  const [file, setFile] = React.useState(null);
+  let [file, setFile] = React.useState(null);
   //const [response, setResponse] = React.useState({});
   const [fileName, setFileName] = React.useState('');
   const history = useHistory();
   const {state,action} = useStateMachine(updateAction);
   //file upload function
-  function submitForm(e) {
-     e.preventDefault();
-     console.log(file.files[0]);
-     const formData = new FormData();
+  function submitForm() {
+     //e.preventDefault();
+     console.log(file);
+     const data = new FormData();
 
-     formData.append('file',file);
-
-       //loader on
-       //setLoading(true);
-      //  //setSuccess(false);\
-      //  const formData = new FormData();
-      //  console.log(data);
-      // // Update the formData object
-      // formData.append(data, "file");
-      //
-      //  console.log(formData);
-       axios.post('https://localhost:5000/upload',{
-         body: formData,
+     // formData.append('file',file);
+     data.append("file", file, "file");
+     console.log(data);
+       axios.post('http://localhost:5000/upload',{
+         body: data,
          headers: {
-                 "Content-Type": "multipart/form-data"
-             }
-        }   
+                 'Content-Type': 'application/x-www-form-urlencoded'
+         }
+        }
          ).then((response) => {
            // setResponse(response.data)
            // setFile(response.data);
@@ -94,22 +86,12 @@ export default function Introduction() {
            // setResponse("error");
        })
    }
-   function uploadWithFormData(e) {
-     e.preventDefault();
-     console.log(file.files[0])
-      const formData = new FormData();
-      //formData.append("file", file.files[0]);
-      //console.log(file);
-      formData.append('file', file.files[0]);
-      //formData.append('filename', fileName.value);
 
-      //setFileName(file);
-      submitForm(formData);
-  }
   //console.log(JSON.stringify(words));
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
+  const eventhandler = data => console.log(data);
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -174,10 +156,7 @@ export default function Introduction() {
             <Typography>If you already have a configuration, upload to continue</Typography>
           </Grid>
             <Grid item container class={classes.grid}>
-              <form onSubmit={submitForm}>
-              <input ref = {(ref) => setFile(ref)} className={classes.root} type="file" name="file" />
-              <Button  type="submit"> Submit</Button>
-            </form>
+              <FileUpload onChange={eventhandler}/>
             </Grid>
           </Grid>
           <Grid item xs={12} container justify="center">
