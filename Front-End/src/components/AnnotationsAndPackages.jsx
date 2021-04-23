@@ -52,10 +52,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
   },
 }));
-const defaultValues = {
-  EnumRule: "no",
-  InterfaceChipInput:[],
-};
+
 const ObfuscationTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: '#f5f5f9',
@@ -68,11 +65,15 @@ const ObfuscationTooltip = withStyles((theme) => ({
 
  const AnnotationsAndPackages = () => {
   const classes = useStyles();
+  const {state,action} = useStateMachine(updateAction);
+  let defaultValues = {
+    EnumRule: state.setupDetails.EnumRule,
+    InterfaceChipInput:[state.setupDetails.InterfaceChipInput],
+  };
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
   const [defaultValue,setDefaultValue] = React.useState([]);
-  const {state,action} = useStateMachine(updateAction);
   const history = useHistory();
   const onSubmit = data => {
     console.log(data);

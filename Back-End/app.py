@@ -94,11 +94,11 @@ def uploadConf():
         dictSetup = buildPreConfig(modFileArr)
         print(dictSetup)
 
-        jsonDictSetup = {"setupDetails":{dictSetup}}
+        #jsonDictSetup = {"setupDetails":{dictSetup}}
         #print(jsonDictSetup)
         #response = Flask.Response(jsonDictSetup)
         #response.headers['Access-Control-Allow-Origin'] = '*'
-        return jsonify(jsonDictSetup)
+        return jsonify(dictSetup)
 
 #formdataload
 @app.route('/submit_form', methods=["GET","POST"])
@@ -252,7 +252,10 @@ def processObfuscationFlags():
         return output
     return "success"
 def keepRulesAdd(className,type):
-    return "-keep "+ type + " " +className+".** { *; } \n"
+    finalstring = ""
+    if(isinstance(className, list)):
+        finalstring.join(str(className))
+    return "-keep "+ type + " " +str(className)+".** { *; } \n"
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -260,22 +263,22 @@ def allowed_file(filename):
 
 def buildPreConfig(fileArr):
     #json object for final pass to frontend.
-    ansDictSetup = { "MinifyEnabled": "",
-    "OverloadAggressively":"",
-    "ShrinkResources":"",
-    "OptimizationGradle":"",
-    "OptimizationFullModeR8":"",
-    "GSONKeepRulesEnable": "",
+    ansDictSetup = { "MinifyEnabled": "yes",
+    "OverloadAggressively":"no",
+    "ShrinkResources":"no",
+    "OptimizationGradle":"no",
+    "OptimizationFullModeR8":"no",
+    "GSONKeepRulesEnable": "no",
     "Attributes":[],
     "LibraryChipInput": [],
     "DataClassChipInput": [],
     "InterfaceChipInput":[],
     "WarningChipInput": [],
-    "PrintseedsStats": "",
-    "R8OutputCFG": "",
-    "ShrinkedClassesStats":"",
-    "WebviewRule":"",
-    "EnumRule":""
+    "PrintseedsStats": "no",
+    "R8OutputCFG": "no",
+    "ShrinkedClassesStats":"no",
+    "WebviewRule":"no",
+    "EnumRule":"no"
     }
 
     #All existing rule check and add to UI
@@ -283,21 +286,21 @@ def buildPreConfig(fileArr):
     for elem in fileArr:
         elem = elem.strip()
         if(elem.find("allowaccessmodification")>0):
-            ansDictSetup["OptimizationFullModeR8"] = "Yes"
+            ansDictSetup["OptimizationFullModeR8"] = "yes"
         elif(elem == "overloadaggressively"):
-            ansDictSetup["OverloadAggressively"] ="Yes"
+            ansDictSetup["OverloadAggressively"] ="yes"
         elif(elem == "printseeds"):
-            ansDictSetup["PrintseedsStats"] = "Yes"
+            ansDictSetup["PrintseedsStats"] = "yes"
         elif(elem == "printconfiguration"):
-            ansDictSetup["R8OutputCFG"] = "Yes"
+            ansDictSetup["R8OutputCFG"] = "yes"
         elif(elem == "printusage"):
-            ansDictSetup["ShrinkedClassesStats"] = "Yes"
+            ansDictSetup["ShrinkedClassesStats"] = "yes"
         elif(elem.find("enum")!=-1):
-            ansDictSetup["EnumRule"] = "Yes"
+            ansDictSetup["EnumRule"] = "yes"
         elif(elem.find("keepclassmembers,allowobfuscation")!=-1):
-            ansDictSetup["GSONKeepRulesEnable"] = "Yes"
+            ansDictSetup["GSONKeepRulesEnable"] = "yes"
         elif(elem.find("fqcn")!=-1):
-            ansDictSetup["WebviewRule"] = "Yes"
+            ansDictSetup["WebviewRule"] = "yes"
         elif(elem.find("keepclassmembers class")!=-1):
             result = [x.strip() for x in elem.split(" ")][2]
             ansDictSetup["DataClassChipInput"].append(result)

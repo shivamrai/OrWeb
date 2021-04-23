@@ -11,6 +11,7 @@ import Introduction from './components/Introduction';
 import MainAppBar  from './components/MainAppBar';
 import BasicSetup from './components/BasicSetup';
 import MultiStepForm from './components/MultiStepForm';
+import GlobalState from './components/GlobalState';
 
 createStore({
   setupDetails: {
@@ -19,7 +20,7 @@ createStore({
     ShrinkResources:"",
     OptimizationGradle:"",
     OptimizationFullModeR8:"",
-    GSONKeepRulesEnable: "",
+    GSONKeepRulesEnable: "Yes",
     Attributes:[],
     LibraryChipInput: [],
     DataClassChipInput: [],
@@ -32,18 +33,21 @@ createStore({
     EnumRule:"",
   }
 });
+
 export default function App() {
   return (
     <div className="App">
       <MainAppBar />
-      <DevTool />
+      //<DevTool />
       <header className="App-header">
         <StateMachineProvider>
+        <GlobalState>
           <div className="container">
             <Router>
               <MultiStepForm />
             </Router>
           </div>
+          </GlobalState>
         </StateMachineProvider>
       </header>
   </div>

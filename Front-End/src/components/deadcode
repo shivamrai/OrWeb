@@ -27,3 +27,12 @@ curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash -
 
 
 // <input ref = {(ref) => setFile(ref)} className={classes.root} type="file" name="file" />
+
+render={ ({ onChange, onBlur, value }) =>
+    <ChipInput
+      aria-label="dataClassChipInput"
+      control={<Chip />}
+      onChange={(chips) => console.log("chips",chips)}
+      label="Add Optional Data classes"
+    />
+  }

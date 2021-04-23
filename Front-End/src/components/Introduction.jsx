@@ -108,8 +108,8 @@ export default function Introduction() {
       <CssBaseline />
         <Box className={classes.root} p={2}>
           <Paper elevation={3} >
-          <Grid item xs = {12} class={classes.grid}>
-            <Box container class = {classes.box} >
+          <Grid item xs = {12} className={classes.grid}>
+            <Box container className = {classes.box} >
             <Typography variant="h5" margin='auto'>
             Welcome to OrWeb
             </Typography>

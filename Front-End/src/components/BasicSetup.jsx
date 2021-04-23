@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -55,17 +55,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   paper: {
-    maxHeight: 600, 
+    maxHeight: 600,
     overflow: 'auto',
   },
 }));
-const defaultValues = {
-  MinifyEnabled: "yes",
-  OverloadAggressively: "no",
-  ShrinkResources:"no",
-  OptimizationGradle:"no",
-  OptimizationFullModeR8:"no",
-};
+
 const ObfuscationTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: '#f5f5f9',
@@ -94,9 +88,25 @@ const BasicSetup = (props) => {
   const [value, setValue] = React.useState(true);
   const [aggObfvalue, setAggObfvalue] = React.useState('');
   const {state,action} = useStateMachine(updateAction);
+  let defaultValues = {
+    MinifyEnabled: "no",
+    OverloadAggressively: "yes",
+    ShrinkResources:"no",
+    OptimizationGradle:"no",
+    OptimizationFullModeR8:"no",
+  };
+  defaultValues.MinifyEnabled = state.setupDetails.MinifyEnabled;
+  defaultValues.OverloadAggressively = state.setupDetails.OverloadAggressively;
+  console.log(defaultValues.OverloadAggressively);
+
   const {handleSubmit, errors, register, control} = useForm({
-    defaultValues
+    defaultValues,
   });
+  useEffect(() => {
+    defaultValues = state.setupDetails
+  },
+  [state],
+);
   const history = useHistory();
   const onSubmit = data => {
     action(data);
@@ -119,7 +129,6 @@ const BasicSetup = (props) => {
               </Grid>
               <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
                 <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
-
                   <section className={classes.section}>
                     <Typography>Do you want to enable{" "}
                     <ObfuscationTooltip
@@ -156,12 +165,12 @@ const BasicSetup = (props) => {
                     <Controller
                       as={
                         <FormControlLabel
-                          control={<PurpleSwitch value="yes"/>}
-
+                          control={<PurpleSwitch />}
+                          value = {"yes"}
                           type="checkbox"
                         />}
                       name="OverloadAggressively"
-                      value={"no"}
+                      value={"yes"}
                       control = {control}
                       ref = {register}
                      />

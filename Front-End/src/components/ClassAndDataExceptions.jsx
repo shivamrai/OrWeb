@@ -57,11 +57,9 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
     },
 }));
-const defaultValues = {
-  GSONKeepRulesEnable: "yes",
-  LibraryChipInput: ["Tes3","Tes4"],
-  DataClassChipInput: ["Tes1","Tes2"],
-};
+
+
+
 
 const ObfuscationTooltip = withStyles((theme) => ({
   tooltip: {
@@ -73,11 +71,20 @@ const ObfuscationTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const ClassAndDataExceptions = () => {
+const ClassAndDataExceptions = (appState) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
-  const [aggObfvalue, setAggObfvalue] = React.useState('');
+  console.log('appstate',appState);
   const {state,action} = useStateMachine(updateAction);
+  console.log(state);
+  console.log(appState);
+  console.log(state.setupDetails.LibraryChipInput);
+  let defaultValues = {
+    GSONKeepRulesEnable: state.setupDetails.GSONKeepRulesEnable,
+    LibraryChipInput: state.setupDetails.LibraryChipInput,//appState.LibraryChipInput,
+    DataClassChipInput: state.setupDetails.DataClassChipInput,//appState.DataClassChipInput,
+  };
+  const [aggObfvalue, setAggObfvalue] = React.useState('');
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues
   });
@@ -91,7 +98,7 @@ const ClassAndDataExceptions = () => {
     history.push("/basicSetup");
   };
   return (
-    <Container component="main" maxWidth="md" fixed={true}>
+    <Container component="main" maxWidth="md" fixed={true} alignContent="flex-start" alignItems='flex-start'>
     <CssBaseline />
         <Paper elevation={1} className={classes.paper}>
           <Grid container spacing={2}>
@@ -102,7 +109,7 @@ const ClassAndDataExceptions = () => {
                   <Typography>This section specifies the rules that help us keep some important exceptions from obfuscation as the applications may cause runtime issues due to obfuscation of these classes/libraries. There are some links added to get a guide on covered exceptions.</Typography>
               </Grid>
               <Grid item xs={12} >
-                <form onSubmit={handleSubmit(onSubmit)} class={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                   <section className={classes.section}>
                     <Typography>Do you have any{" "}
                     <ObfuscationTooltip
@@ -113,7 +120,7 @@ const ClassAndDataExceptions = () => {
                         </React.Fragment>
                       }
                     >
-                      <Link>data</Link>
+                      <Link to="/">data</Link>
                     </ObfuscationTooltip>
                     {" "}classes(classes requiring serialization from GSON on initialization)(these will be added to skip since these may cause issues with application behavior or bugs)?</Typography>
                     <Controller
@@ -137,7 +144,7 @@ const ClassAndDataExceptions = () => {
                     />
                     <Typography>Known issues with GSON <a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                   </section>
-                  <Grid item xs={24} sm={12} alignContent="flex-start" alignItems='flex-start'>
+                  <Grid item xs={24} sm={12} >
                     <section className={classes.section}>
                       <Typography>Are you using data classes without{" "}
                       <ObfuscationTooltip
@@ -148,7 +155,7 @@ const ClassAndDataExceptions = () => {
                           </React.Fragment>
                         }
                       >
-                        <Link>@SerializedName</Link>
+                        <Link to="\">@SerializedName</Link>
                       </ObfuscationTooltip>
                       {" "}annotation?
                       </Typography>
@@ -157,10 +164,21 @@ const ClassAndDataExceptions = () => {
                           aria-label="dataClassChipInput"
                           control={<Chip />}
                           label="Add Optional Data classes"
+                          onChange={(chips) => console.log("chips",chips)}
                         />
                       }
+                      // <Controller
+                      // render={ ({ onChange, onBlur, value }) =>
+                      //     <ChipInput
+                      //       aria-label="dataClassChipInput"
+                      //       control={<Chip />}
+                      //       onChange={(chips) => console.log("chips",chips)}
+                      //       label="Add Optional Data classes"
+                      //     />
+                      //   }
                       name="DataClassChipInput"
                       control={control}
+                      //defaultValue={state.setupDetails.DataClassChipInput}
                       ref={register}
                       />
                       <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
@@ -178,7 +196,7 @@ const ClassAndDataExceptions = () => {
                         </React.Fragment>
                       }
                     >
-                      <Link>libraries</Link>
+                      <Link to="\">libraries</Link>
                     </ObfuscationTooltip>
                     {" "}in your project (like OkHttp3)?</Typography>
                     <Controller as={
@@ -200,7 +218,7 @@ const ClassAndDataExceptions = () => {
                         </React.Fragment>
                       }
                     >
-                      <Link>these</Link>
+                      <Link to="\">these</Link>
                     </ObfuscationTooltip> classes/packages/libraries in below Text Field (case sensitive and specify complete names)<a href="https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md">here</a> </Typography>
                     <Typography>Specify complete names so that correct packages can be targeted, eg for OkHttp3 <i>okhttp3.internal.publicsuffix.PublicSuffixDatabase </i><a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro">Read about the fix here.</a></Typography>
                     <Typography>You can also add some classes of <ObfuscationTooltip
@@ -211,7 +229,7 @@ const ClassAndDataExceptions = () => {
                         </React.Fragment>
                       }
                     >
-                      <Link>EnumArg/ParcelableArg/SerializableArg</Link>
+                      <Link to="\">EnumArg/ParcelableArg/SerializableArg</Link>
                     </ObfuscationTooltip> type for R8 considerations <i>com.path.to.your.EnumArg/ParcelableArg/SerializableArg </i><a href="https://developer.android.com/guide/navigation/navigation-pass-data#proguard_considerations">More about this issue</a></Typography>
                   </section>
               </form>
