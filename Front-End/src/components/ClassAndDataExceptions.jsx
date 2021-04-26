@@ -73,9 +73,8 @@ const ObfuscationTooltip = withStyles((theme) => ({
 
 const ClassAndDataExceptions = (appState) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState('');
   console.log('appstate',appState);
-  const {state,action} = useStateMachine(updateAction);
+  const {actions, state} = useStateMachine({ updateAction, addDataLibrary, deleteDataLibrary });
   console.log(state);
   console.log(appState);
   console.log(state.setupDetails.LibraryChipInput);
@@ -85,16 +84,43 @@ const ClassAndDataExceptions = (appState) => {
     DataClassChipInput: state.setupDetails.DataClassChipInput,//appState.DataClassChipInput,
   };
   const [aggObfvalue, setAggObfvalue] = React.useState('');
-  const {handleSubmit, errors, register, control} = useForm({
+  const {handleSubmit, errors, register, control, setValue } = useForm({
     defaultValues
   });
+
+  function addDataLibrary(state, name, chip) {
+    setValue('DataClassChipInput', [...state.setupDetails.DataClassChipInput, chip])
+    return {
+      ...state,
+      setupDetails: {
+        ...state.setupDetails,
+        DataClassChipInput: [...state.setupDetails.DataClassChipInput, chip]
+      }
+    };
+  }
+
+  function deleteDataLibrary(state, chip){
+    var index = state.setupDetails.DataClassChipInput.indexOf(chip);
+    if (index !== -1) {
+      state.setupDetails.DataClassChipInput.splice(index, 1);
+    }
+    setValue('DataClassChipInput', [...state.setupDetails.DataClassChipInput])
+    return {
+      ...state,
+      setupDetails: {
+        ...state.setupDetails,
+        DataClassChipInput: [...state.setupDetails.DataClassChipInput]
+      }
+    };
+  }
+
   const history = useHistory();
   const onSubmit = data => {
-    action(data);
+    actions.updateAction(data);
     history.push("/annotationsAndPackages");
   };
   const onBack = data => {
-    //action(data);
+    actions(data);
     history.push("/basicSetup");
   };
   return (
@@ -159,27 +185,19 @@ const ClassAndDataExceptions = (appState) => {
                       </ObfuscationTooltip>
                       {" "}annotation?
                       </Typography>
-                      <Controller as={
-                        <ChipInput
-                          aria-label="dataClassChipInput"
-                          control={<Chip />}
-                          label="Add Optional Data classes"
-                          onChange={(chips) => console.log("chips",chips)}
-                        />
-                      }
-                      // <Controller
-                      // render={ ({ onChange, onBlur, value }) =>
-                      //     <ChipInput
-                      //       aria-label="dataClassChipInput"
-                      //       control={<Chip />}
-                      //       onChange={(chips) => console.log("chips",chips)}
-                      //       label="Add Optional Data classes"
-                      //     />
-                      //   }
-                      name="DataClassChipInput"
-                      control={control}
-                      //defaultValue={state.setupDetails.DataClassChipInput}
-                      ref={register}
+                      <Controller 
+                        as={
+                          <ChipInput
+                            onAdd={(chip) => actions.addDataLibrary(chip)}
+                            onDelete={(chip, index) => actions.deleteDataLibrary(chip)}
+                            aria-label="dataClassChipInput"
+                            control={<Chip/>}
+                            label="Add Optional Data classes"
+                          />
+                        }
+                        name="DataClassChipInput"
+                        control={control}
+                        ref={register}
                       />
                       <Typography>Add those classes in format <i>"class in.uncod.android.bypass.Document"</i> in below Text Field (case sensitive)</Typography>
                       <Typography>These will be added to skip since these may cause issues with application behavior or bugs</Typography>
