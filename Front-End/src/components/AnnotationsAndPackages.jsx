@@ -68,12 +68,26 @@ const ObfuscationTooltip = withStyles((theme) => ({
   const {state,action} = useStateMachine(updateAction);
   let defaultValues = {
     EnumRule: state.setupDetails.EnumRule,
-    InterfaceChipInput:[state.setupDetails.InterfaceChipInput],
+    InterfaceChipInput:state.setupDetails.InterfaceChipInput,
   };
-  const {handleSubmit, errors, register, control} = useForm({
+  const checkedName = ["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","Annotation","EnclosingMethod","Synthetic","MethodParameters"];
+  const {handleSubmit, errors, register, control, onChange,setValue} = useForm({
     defaultValues
   });
-  const [defaultValue,setDefaultValue] = React.useState([]);
+  console.log(state);
+  const [checkedValue,setCheckedValue] = React.useState(checkedName);
+  const handleSelect = (name) => {
+    console.log(name);
+    const newNames = checkedValue?.includes(checkedName)
+      ? checkedValue?.filter((name) => name !== checkedName)
+      : [...(checkedValue ?? []), checkedName];
+
+    console.log(newNames);
+    return [name];
+
+  }
+
+
   const history = useHistory();
   const onSubmit = data => {
     console.log(data);
@@ -173,10 +187,12 @@ const ObfuscationTooltip = withStyles((theme) => ({
                       <Link>attributes</Link>
                     </ObfuscationTooltip>
                     {" "}? Check all that apply</Typography>
-                    {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","*Annotation*","EnclosingMethod","Synthetic","MethodParameters"].map(name => (
+                    {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","Annotation","EnclosingMethod","Synthetic","MethodParameters"].map(name => (
                       <Controller
                         key={name}
                         name={name}
+                        checked={(checkedName.includes(name))}
+                        onChange={() => handleSelect(name)}
                         as={
                           <FormControlLabel
                             control={<Checkbox value={name} />}
@@ -185,13 +201,29 @@ const ObfuscationTooltip = withStyles((theme) => ({
                         }
                         valueName={defaultValues.Attributes}
                         type="checkbox"
-                        onChange={([e]) => {
-                            return e.target.checked ? e.target.value : "";
-                          }
-                        }
+                        // onChange={([e]) => {
+                        //     console.log(e);
+                        //     return e.target.checked ? e.target.value : "";
+                        //   }
+                        // }
                         control={control}
                         ref={register}
                       />
+                      ))}
+                      {["Exceptions","InnerClasses","Signature","Deprecated","SourceFile","LineNumberTable","Annotation","EnclosingMethod","Synthetic","MethodParameters"].map((name) => (
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              as={<Checkbox />}
+                              control={control}
+                              checked={checkedName.includes(name)}
+                              name="names"
+                              onChange={() => handleSelect(name)}
+                            />
+                          }
+                          key={name}
+                          label={name}
+                        />
                       ))}
                       <p>You can select from above attributes which are being called in your project and they will be skipped from obfuscation. </p>
                   </section>

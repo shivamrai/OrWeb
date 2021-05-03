@@ -73,11 +73,11 @@ const ObfuscationTooltip = withStyles((theme) => ({
 
 const ClassAndDataExceptions = (appState) => {
   const classes = useStyles();
-  console.log('appstate',appState);
-  const {actions, state} = useStateMachine({ updateAction, addDataLibrary, deleteDataLibrary });
-  console.log(state);
-  console.log(appState);
-  console.log(state.setupDetails.LibraryChipInput);
+  //console.log('appstate',appState);
+  const {actions, state} = useStateMachine({ updateAction, addDataLibrary, deleteDataLibrary, addLibrary, deleteLibrary });
+  // console.log(state);
+  // console.log(appState);
+  // console.log(state.setupDetails.LibraryChipInput);
   let defaultValues = {
     GSONKeepRulesEnable: state.setupDetails.GSONKeepRulesEnable,
     LibraryChipInput: state.setupDetails.LibraryChipInput,//appState.LibraryChipInput,
@@ -88,13 +88,24 @@ const ClassAndDataExceptions = (appState) => {
     defaultValues
   });
 
-  function addDataLibrary(state, name, chip) {
+  function addDataLibrary(state, chip) {
     setValue('DataClassChipInput', [...state.setupDetails.DataClassChipInput, chip])
     return {
       ...state,
       setupDetails: {
         ...state.setupDetails,
         DataClassChipInput: [...state.setupDetails.DataClassChipInput, chip]
+      }
+    };
+  }
+
+  function addLibrary(state, chip) {
+    setValue('LibraryChipInput', [...state.setupDetails.LibraryChipInput, chip])
+    return {
+      ...state,
+      setupDetails: {
+        ...state.setupDetails,
+        LibraryChipInput: [...state.setupDetails.LibraryChipInput, chip]
       }
     };
   }
@@ -110,6 +121,21 @@ const ClassAndDataExceptions = (appState) => {
       setupDetails: {
         ...state.setupDetails,
         DataClassChipInput: [...state.setupDetails.DataClassChipInput]
+      }
+    };
+  }
+
+  function deleteLibrary(state, chip){
+    var index = state.setupDetails.DataClassChipInput.indexOf(chip);
+    if (index !== -1) {
+      state.setupDetails.DataClassChipInput.splice(index, 1);
+    }
+    setValue('LibraryChipInput', [...state.setupDetails.LibraryChipInput])
+    return {
+      ...state,
+      setupDetails: {
+        ...state.setupDetails,
+        LibraryChipInput: [...state.setupDetails.LibraryChipInput]
       }
     };
   }
@@ -185,7 +211,7 @@ const ClassAndDataExceptions = (appState) => {
                       </ObfuscationTooltip>
                       {" "}annotation?
                       </Typography>
-                      <Controller 
+                      <Controller
                         as={
                           <ChipInput
                             onAdd={(chip) => actions.addDataLibrary(chip)}
@@ -219,6 +245,8 @@ const ClassAndDataExceptions = (appState) => {
                     {" "}in your project (like OkHttp3)?</Typography>
                     <Controller as={
                       <ChipInput
+                        onAdd={(chip) => actions.addLibrary(chip)}
+                        onDelete={(chip, index) => actions.deleteLibrary(chip)}
                         aria-label="libraryChipInput"
                         control={<Chip />}
                         label="Add correct Class names."

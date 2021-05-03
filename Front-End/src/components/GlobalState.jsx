@@ -3,22 +3,22 @@ import PreFillReducer from './PreFillReducer.jsx';
 
 const initialState = {
   setupDetails: {
-    MinifyEnabled: "",
-    OverloadAggressively: "",
-    ShrinkResources:"",
-    OptimizationGradle:"",
-    OptimizationFullModeR8:"",
+    MinifyEnabled: "Yes",
+    OverloadAggressively: "No",
+    ShrinkResources:"No",
+    OptimizationGradle:"No",
+    OptimizationFullModeR8:"No",
     GSONKeepRulesEnable: "Yes",
     Attributes:[],
     LibraryChipInput: [],
     DataClassChipInput: [],
     InterfaceChipInput:[],
     WarningChipInput: [],
-    PrintseedsStats: "",
-    R8OutputCFG: "",
-    ShrinkedClassesStats:"",
-    WebviewRule:"",
-    EnumRule:"",
+    PrintseedsStats: "No",
+    R8OutputCFG: "No",
+    ShrinkedClassesStats:"No",
+    WebviewRule:"No",
+    EnumRule:"No",
   }
 }
 
