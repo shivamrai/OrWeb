@@ -25,4 +25,11 @@ yarn-error.log*
 /Front-End/node_modules
 /Front-End/src/components/deadcode
 
+/.idea/
+
 /My-First-Key-Pair.pem
+.gitignore
+/.gitignore
+
+
+../.gitignore

@@ -78,12 +78,13 @@ const ObfuscationTooltip = withStyles((theme) => ({
   const [checkedValue,setCheckedValue] = React.useState(checkedName);
   const handleSelect = (name) => {
     console.log(name);
+    setValue(...(name:name));
     const newNames = checkedValue?.includes(checkedName)
       ? checkedValue?.filter((name) => name !== checkedName)
       : [...(checkedValue ?? []), checkedName];
 
     console.log(newNames);
-    return [name];
+    return newNames;
 
   }
 
