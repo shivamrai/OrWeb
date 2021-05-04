@@ -146,7 +146,7 @@ const ClassAndDataExceptions = (appState) => {
     history.push("/annotationsAndPackages");
   };
   const onBack = data => {
-    actions(data);
+    //actions(data);
     history.push("/basicSetup");
   };
   return (

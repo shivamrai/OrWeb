@@ -193,7 +193,7 @@ const ObfuscationTooltip = withStyles((theme) => ({
                         key={name}
                         name={name}
                         checked={(checkedName.includes(name))}
-                        onChange={() => handleSelect(name)}
+                        // onChange={() => handleSelect(name)}
                         as={
                           <FormControlLabel
                             control={<Checkbox value={name} />}
@@ -202,11 +202,11 @@ const ObfuscationTooltip = withStyles((theme) => ({
                         }
                         valueName={defaultValues.Attributes}
                         type="checkbox"
-                        // onChange={([e]) => {
-                        //     console.log(e);
-                        //     return e.target.checked ? e.target.value : "";
-                        //   }
-                        // }
+                        onChange={(e) => {
+                            console.log('shivam', e);
+                            return e.target.checked ? e.target.value : "";
+                          }
+                        }
                         control={control}
                         ref={register}
                       />
@@ -215,11 +215,11 @@ const ObfuscationTooltip = withStyles((theme) => ({
                         <FormControlLabel
                           control={
                             <Controller
-                              as={<Checkbox />}
+                              as={<Checkbox  onChange={() => handleSelect(name)} />}
                               control={control}
                               checked={checkedName.includes(name)}
                               name="names"
-                              onChange={() => handleSelect(name)}
+
                             />
                           }
                           key={name}

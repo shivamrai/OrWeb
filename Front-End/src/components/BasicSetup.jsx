@@ -107,6 +107,10 @@ const BasicSetup = (props) => {
   },
   [state],
 );
+  const shoot = (bool) => {
+      if(bool){ return "Yes"}
+      else{return "No"}
+  }
   const history = useHistory();
   const onSubmit = data => {
     action(data);
@@ -165,7 +169,7 @@ const BasicSetup = (props) => {
                     <Controller
                       as={
                         <FormControlLabel
-                          control={<PurpleSwitch />}
+                          control={<PurpleSwitch value={shoot()}/>}
                           value = {"yes"}
                           type="checkbox"
                         />}
@@ -268,13 +272,14 @@ const BasicSetup = (props) => {
                       <Controller
                         as={
                           <FormControlLabel
-                            control={<PurpleSwitch value="yes"/>}
-                            type="checkbox"
+                            control={<PurpleSwitch inputRef={register} value={"Yes"} />}
+                            // type="checkbox"
                           />}
                         name="OptimizationFullModeR8"
-                        value={"no"}
+                        //value={"no"}
                         control = {control}
-                        ref = {register}
+                        setValue={setValue}
+                        //ref = {register}
                        />
                        <label>Full Mode{" "}<ObfuscationTooltip
                          title={
