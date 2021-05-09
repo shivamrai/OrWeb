@@ -98,6 +98,7 @@ const BasicSetup = (props) => {
   defaultValues.MinifyEnabled = state.setupDetails.MinifyEnabled;
   defaultValues.OverloadAggressively = state.setupDetails.OverloadAggressively;
   console.log(defaultValues.OverloadAggressively);
+  console.log("overLoad", state.setupDetails.OverloadAggressively)
 
   const {handleSubmit, errors, register, control} = useForm({
     defaultValues,
@@ -169,12 +170,12 @@ const BasicSetup = (props) => {
                     <Controller
                       as={
                         <FormControlLabel
-                          control={<PurpleSwitch value={shoot()}/>}
-                          value = {"yes"}
+                          control={<PurpleSwitch value={defaultValues.OverloadAggressively === "No"}/>}
+                          value = {defaultValues.OverloadAggressively === "No"}
                           type="checkbox"
                         />}
                       name="OverloadAggressively"
-                      value={"yes"}
+                      value={defaultValues.OverloadAggressively === "No"}
                       control = {control}
                       ref = {register}
                      />
