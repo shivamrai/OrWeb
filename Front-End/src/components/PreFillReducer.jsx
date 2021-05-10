@@ -11,16 +11,18 @@
 //       return state;
 //   }
 // }
-const PreFillReducer = (state,action) => {
-  console.log(action.payload);
-  switch (action.type) {
-    case 'ADD_DETAILS':
-      return{
-        ...state,
-        setupDetails: action.payload
-      };
-    default: return state;
-  };
+const PreFillReducer = (state, action) => {
+    console.log(action.payload);
+    switch (action.type) {
+        case 'ADD_DETAILS':
+            return {
+                ...state,
+                setupDetails: action.payload
+            };
+        default:
+            return state;
+    }
+    ;
 };
 
 export default PreFillReducer;

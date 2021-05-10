@@ -211,7 +211,7 @@ const AnnotationsAndPackages = () => {
                                         // console.log("state",state);
                                         // console.log("boat",boat);
                                         let newpreValues = state.setupDetails[boat] === boat;
-                                        console.log("set",newpreValues, state.setupDetails[boat], boat);
+                                        console.log("set", newpreValues, state.setupDetails[boat], boat);
                                         return (
                                             <MultiCheckBox
                                                 key={boat}
