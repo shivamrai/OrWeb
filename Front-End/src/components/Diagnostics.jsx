@@ -87,21 +87,10 @@ const PurpleSwitch = withStyles({
     track: {},
 })(Switch);
 const Diagnostics = (props) => {
-    const classes = useStyles();
-    const {state, action} = useStateMachine(updateAction);
-    const [resData, setResData] = useState({"first": 1});
-    const [stat,setStat] = useState(state.setupDetails.PrintseedsStats);
-    const [reqData, setReqData] = useState(state.setupDetails);
-    const {handleSubmit, errors, register, control, setValue} = useForm({
-        defaultValues
-    });
-    const [gradleConfig, setGradleConfig] = useState("loading...");
-    const [gradleProperties, setGradleProperties] = useState("loading...");
-    const [rulesPro, setRulesPro] = useState("loading...");
-
-     const handleChange = (e) =>  {
+    const handleChange = (state, e) =>  {
+        console.log(e.target.checked);
         //create an object
-         let newsetupDetails;
+        let newsetupDetails;
 
         if(e.target.checked === true){
             console.log("1st block")
@@ -138,7 +127,7 @@ const Diagnostics = (props) => {
         //console.log(name);
         //updateStat(!!e.target.checked);
 
-       // console.log(state.setupDetails)
+      // console.log(state.setupDetails)
         // let respChecked = "no";
         // if (e.target.checked === true){
         //     respChecked = "yes";
@@ -166,7 +155,19 @@ const Diagnostics = (props) => {
         //     // Trimming any whitespace
         //     [e.target.name]: e.target.value
         // });
-    };
+    }
+    const classes = useStyles();
+    const {state, actions} = useStateMachine({ handleChange, updateAction });
+    const [resData, setResData] = useState({"first": 1});
+    const [stat,setStat] = useState(state.setupDetails.PrintseedsStats);
+    const [reqData, setReqData] = useState(state.setupDetails);
+    const {handleSubmit, errors, register, control, setValue} = useForm({
+        defaultValues
+    });
+    const [gradleConfig, setGradleConfig] = useState("loading...");
+    const [gradleProperties, setGradleProperties] = useState("loading...");
+    const [rulesPro, setRulesPro] = useState("loading...");
+
     React.useEffect(() => {
         console.log("changed to:" + stat);
         console.log(state.setupDetails.PrintseedsStats)
@@ -177,12 +178,12 @@ const Diagnostics = (props) => {
     const onSubmit = data => {
         console.log("Data")
         console.log(data)
-        action(data);
+        actions.updateAction(data);
         history.push("/result");
     };
 
     const onBack = data => {
-        //action(data);
+        //updateAction(data);
         history.push("/annotationsAndPackages");
     };
 
@@ -246,7 +247,7 @@ const Diagnostics = (props) => {
                                                 id="printseedsStats"
                                                 type="checkbox"
                                                 name="PrintseedsStats"
-                                                onChange={(e)=>(handleChange(e))}
+                                                onChange={(e)=>(actions.handleChange(e))}
                                                 // inputRef={register}
                                                 value={state.setupDetails.PrintseedsStats}
                                                 checked={state.setupDetails.PrintseedsStats === "yes"}
