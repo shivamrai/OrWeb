@@ -99,24 +99,36 @@ const Diagnostics = (props) => {
     const [gradleProperties, setGradleProperties] = useState("loading...");
     const [rulesPro, setRulesPro] = useState("loading...");
 
-     const handleChange = async (e) =>  {
+     const handleChange = (e) =>  {
         //create an object
-        if(!!e.target.checked){
-            //console.log(stat);
+         let newsetupDetails;
+
+        if(e.target.checked === true){
+            console.log("1st block")
+            console.log(state.setupDetails.PrintseedsStats);
             setStat("yes");
-            //console.log(stat);
-            //console.log(e.target.checked);
+            newsetupDetails =  {
+                ...state.setupDetails,
+                PrintseedsStats: "yes"
+            };
+            setValue('PrintseedsStats', "no");
+
+            console.log(state.setupDetails.PrintseedsStats);
+
         }
-        else if(!(e.target.checked) || e.target.checked === false){
-            console.log(stat);
+        else{
+            console.log("2nd block")
+            console.log(state.setupDetails.PrintseedsStats);
             setStat("no");
-            console.log(stat);
-            //console.log(e.target.checked);
+            newsetupDetails =  {
+                ...state.setupDetails,
+                PrintseedsStats: "no"
+            };
+            setValue('PrintseedsStats', "yes");
+            console.log(state.setupDetails.PrintseedsStats);
+
         }
-        const newsetupDetails =  {
-            ...state.setupDetails,
-            PrintseedsStats: stat
-        };
+
 
         console.log("New Setup ");
         console.log(newsetupDetails);
@@ -125,7 +137,8 @@ const Diagnostics = (props) => {
         //console.log(e.target.checked);
         //console.log(name);
         //updateStat(!!e.target.checked);
-        setValue('PrintseedsStats', stat)
+
+       // console.log(state.setupDetails)
         // let respChecked = "no";
         // if (e.target.checked === true){
         //     respChecked = "yes";
@@ -137,8 +150,9 @@ const Diagnostics = (props) => {
             ...state,
             setupDetails: newsetupDetails
             };
+
         console.log(ret);
-        return await ret;
+        return ret;
         // console.log(state.setupDetails.PrintseedsStats);
         // console.log(stat);
         // if (e.target.checked === true) {
@@ -157,10 +171,12 @@ const Diagnostics = (props) => {
         console.log("changed to:" + stat);
         console.log(state.setupDetails.PrintseedsStats)
         console.log(state)
-    }, [stat]);
+    }, [state.setupDetails.PrintseedsStats]);
 
     const history = useHistory();
     const onSubmit = data => {
+        console.log("Data")
+        console.log(data)
         action(data);
         history.push("/result");
     };
@@ -232,8 +248,9 @@ const Diagnostics = (props) => {
                                                 name="PrintseedsStats"
                                                 onChange={(e)=>(handleChange(e))}
                                                 // inputRef={register}
-                                                value={stat}
-                                                checked={stat === "yes"}
+                                                value={state.setupDetails.PrintseedsStats}
+                                                checked={state.setupDetails.PrintseedsStats === "yes"}
+                                                //checked={true}
                                             />
                                         );
                                     }}
